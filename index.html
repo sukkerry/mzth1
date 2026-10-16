@@ -9,15 +9,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Latar belakang beranimasi -->
+    <div class="animated-bg">
+        <div class="floating-emoji" style="--delay:0s; --duration:15s; --left:5%;">🎵</div>
+        <div class="floating-emoji" style="--delay:2s; --duration:18s; --left:15%;">🎶</div>
+        <div class="floating-emoji" style="--delay:4s; --duration:20s; --left:25%;">🎼</div>
+        <div class="floating-emoji" style="--delay:1s; --duration:16s; --left:35%;">🎤</div>
+        <div class="floating-emoji" style="--delay:3s; --duration:22s; --left:45%;">🥁</div>
+        <div class="floating-emoji" style="--delay:5s; --duration:19s; --left:55%;">🎹</div>
+        <div class="floating-emoji" style="--delay:0.5s; --duration:17s; --left:65%;">🎷</div>
+        <div class="floating-emoji" style="--delay:2.5s; --duration:21s; --left:75%;">🎺</div>
+        <div class="floating-emoji" style="--delay:4.5s; --duration:14s; --left:85%;">🎸</div>
+        <div class="floating-emoji" style="--delay:1.5s; --duration:23s; --left:95%;">🎻</div>
+    </div>
+
     <div id="app">
         <!-- Header DSKP -->
         <header class="app-header">
             <div class="dskp-info">
-                <h1><i class="fas fa-music"></i> Pendidikan Muzik Tahun 1</h1>
+                <h1><i class="fas fa-music bouncing"></i> Pendidikan Muzik Tahun 1</h1>
                 <p class="dskp-detail"><strong>Standard Kandungan 3.1.2:</strong> Mengecam bunyi yang didengar — haiwan, manusia, kenderaan</p>
                 <p class="dskp-sub">Program Pendidikan Khas Integrasi (Pembelajaran) • KSSRPK KS</p>
             </div>
-            <!-- Butang kawalan bunyi -->
             <button id="sound-toggle" class="sound-toggle" title="Hidup/Mati bunyi">
                 <i class="fas fa-volume-up"></i>
             </button>
@@ -25,39 +38,38 @@
 
         <!-- SKRIN 1: PILIH LEVEL -->
         <section id="level-selection" class="screen active">
-            <h2 class="section-title"><i class="fas fa-star"></i> Pilih Tahap Kesukaran <i class="fas fa-star"></i></h2>
+            <h2 class="section-title pop-in"><i class="fas fa-star spinning"></i> Pilih Tahap Kesukaran <i class="fas fa-star spinning"></i></h2>
             <div class="level-container">
-                <div class="level-card" data-level="mudah">
-                    <div class="level-icon">🐣</div>
+                <div class="level-card float-anim" data-level="mudah" style="--float-delay:0s;">
+                    <div class="level-icon bounce-slow">🐣</div>
                     <h3>MUDAH</h3>
                     <p>3 bunyi asas setiap kategori</p>
                     <button class="btn-pilih">Pilih</button>
                 </div>
-                <div class="level-card" data-level="sederhana">
-                    <div class="level-icon">🦊</div>
+                <div class="level-card float-anim" data-level="sederhana" style="--float-delay:0.5s;">
+                    <div class="level-icon bounce-slow">🦊</div>
                     <h3>SEDERHANA</h3>
                     <p>4 bunyi setiap kategori</p>
                     <button class="btn-pilih">Pilih</button>
                 </div>
-                <div class="level-card" data-level="mencabar">
-                    <div class="level-icon">🦁</div>
+                <div class="level-card float-anim" data-level="mencabar" style="--float-delay:1s;">
+                    <div class="level-icon bounce-slow">🦁</div>
                     <h3>MENCABAR</h3>
                     <p>5 bunyi setiap kategori</p>
                     <button class="btn-pilih">Pilih</button>
                 </div>
             </div>
-            <p class="hint">Klik pada kad untuk mula belajar!</p>
+            <p class="hint pulse-text">✨ Klik pada kad untuk mula belajar! ✨</p>
         </section>
 
         <!-- SKRIN 2: AKTIVITI -->
         <section id="activity-screen" class="screen">
-            <div class="activity-header">
+            <div class="activity-header slide-in-top">
                 <button id="back-to-level" class="btn-back"><i class="fas fa-arrow-left"></i> Tahap</button>
                 <h2 id="current-level-title">MUDAH</h2>
                 <div class="activity-progress" id="activity-progress">Aktiviti 1/7</div>
             </div>
 
-            <!-- 7 TAB AKTIVITI -->
             <div class="activity-tabs" id="activity-tabs">
                 <button class="tab-btn active" data-activity="0">1. Mengecam</button>
                 <button class="tab-btn" data-activity="1">2. Padanan</button>
@@ -68,10 +80,8 @@
                 <button class="tab-btn" data-activity="6">7. Puzzle</button>
             </div>
 
-            <!-- KANDUNGAN AKTIVITI -->
             <div id="activity-content" class="activity-content"></div>
 
-            <!-- MAKLUM BALAS -->
             <div id="feedback" class="feedback"></div>
         </section>
     </div>
