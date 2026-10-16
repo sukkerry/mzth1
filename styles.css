@@ -1,4 +1,4 @@
-/* styles.css — Playful, responsive, child-friendly */
+/* styles.css — Playful, responsive, animated, child-friendly */
 * {
     margin: 0;
     padding: 0;
@@ -15,30 +15,87 @@ body {
     justify-content: center;
     align-items: center;
     padding: 10px;
+    overflow-x: hidden;
+    position: relative;
 }
 
+/* ========== LATAR BELAKANG BERANIMASI ========== */
+.animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.floating-emoji {
+    position: absolute;
+    bottom: -80px;
+    font-size: 2.5rem;
+    opacity: 0.25;
+    animation: floatUp var(--duration, 18s) linear infinite;
+    animation-delay: var(--delay, 0s);
+    left: var(--left, 10%);
+    filter: blur(0.5px);
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.35;
+    }
+    90% {
+        opacity: 0.35;
+    }
+    100% {
+        transform: translateY(-110vh) rotate(360deg) scale(1.3);
+        opacity: 0;
+    }
+}
+
+/* ========== KOTAK APP ========== */
 #app {
     max-width: 1100px;
     width: 100%;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(12px);
     border-radius: 60px 60px 40px 40px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2),
+                0 0 60px rgba(255, 179, 71, 0.3);
     overflow: hidden;
     border: 6px solid #ffb347;
     padding: 20px 20px 30px;
     position: relative;
+    z-index: 1;
+    animation: appEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Header */
+@keyframes appEntrance {
+    0% { opacity: 0; transform: scale(0.7) translateY(50px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ========== HEADER ========== */
 .app-header {
     text-align: center;
-    background: #fff2d7;
+    background: linear-gradient(135deg, #fff2d7 0%, #ffe6b3 100%);
     padding: 15px 20px;
     border-radius: 40px 40px 20px 20px;
     margin-bottom: 15px;
     border: 4px dashed #ff9f4b;
     position: relative;
+    animation: headerGlow 3s ease-in-out infinite;
+}
+
+@keyframes headerGlow {
+    0%, 100% { box-shadow: 0 0 0 rgba(255, 159, 75, 0); }
+    50% { box-shadow: 0 0 30px rgba(255, 159, 75, 0.5); }
 }
 
 .dskp-info h1 {
@@ -57,6 +114,12 @@ body {
     margin: 8px 0 4px;
     color: #5e2e00;
     font-weight: 600;
+    animation: shimmer 2.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { background: #ffe6b3; }
+    50% { background: #ffd28c; box-shadow: 0 0 15px #ffd28c; }
 }
 
 .dskp-sub {
@@ -64,7 +127,7 @@ body {
     color: #7a4a1b;
 }
 
-/* Butang bunyi */
+/* ========== BUTANG BUNYI ========== */
 .sound-toggle {
     position: absolute;
     top: 15px;
@@ -78,11 +141,17 @@ body {
     color: #4f2b00;
     cursor: pointer;
     box-shadow: 0 4px 0 #b15e00;
-    transition: 0.1s;
+    transition: 0.2s;
+    animation: pulseBtn 2s infinite;
+}
+
+@keyframes pulseBtn {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
 }
 
 .sound-toggle:active {
-    transform: translateY(3px);
+    transform: translateY(3px) scale(0.95);
     box-shadow: 0 1px 0 #b15e00;
 }
 
@@ -90,32 +159,60 @@ body {
     background: #ccc;
     border-color: #888;
     color: #666;
+    animation: none;
 }
 
-/* Skrin */
+/* ========== SKRIN ========== */
 .screen {
     display: none;
-    animation: fadeIn 0.4s ease;
 }
 
 .screen.active {
     display: block;
+    animation: screenEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes screenEnter {
+    0% { opacity: 0; transform: translateX(60px) scale(0.9); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 
-/* Pilih Level */
+/* ========== TAJUK SEKSYEN ========== */
 .section-title {
     text-align: center;
     font-size: 1.8rem;
     color: #a64b00;
     margin: 15px 0 20px;
     text-shadow: 2px 2px 0 #ffd28c;
+    animation: titleBounce 2s ease-in-out infinite;
 }
 
+@keyframes titleBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-6px) scale(1.03); }
+}
+
+.pop-in {
+    animation: popIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.3); }
+    70% { transform: scale(1.1); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.spinning {
+    display: inline-block;
+    animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ========== PILIH LEVEL ========== */
 .level-container {
     display: flex;
     flex-wrap: wrap;
@@ -125,19 +222,52 @@ body {
 }
 
 .level-card {
-    background: #fff9ed;
+    background: linear-gradient(145deg, #fff9ed, #ffeac2);
     border-radius: 40px;
     padding: 25px 15px;
     width: 220px;
     text-align: center;
     box-shadow: 0 12px 0 #c27e3a, 0 15px 20px rgba(0, 0, 0, 0.2);
     border: 3px solid #ffb347;
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.level-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    transform: rotate(45deg) translateX(-100%);
+    transition: transform 0.6s;
+}
+
+.level-card:hover::before {
+    transform: rotate(45deg) translateX(100%);
+}
+
+.float-anim {
+    animation: floatCard 3s ease-in-out infinite;
+    animation-delay: var(--float-delay, 0s);
+}
+
+@keyframes floatCard {
+    0%, 100% { transform: translateY(0) rotate(-0.5deg); }
+    50% { transform: translateY(-12px) rotate(0.5deg); }
+}
+
+.level-card:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 20px 0 #c27e3a, 0 25px 35px rgba(0, 0, 0, 0.25);
 }
 
 .level-card:active {
-    transform: translateY(6px);
+    transform: translateY(6px) scale(0.98);
     box-shadow: 0 6px 0 #c27e3a, 0 10px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -147,11 +277,21 @@ body {
     filter: drop-shadow(4px 6px 0 rgba(0,0,0,0.1));
 }
 
+.bounce-slow {
+    animation: bounceSlow 2.5s ease-in-out infinite;
+}
+
+@keyframes bounceSlow {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.1); }
+}
+
 .level-card h3 {
     font-size: 1.9rem;
     color: #b35100;
     margin: 10px 0 5px;
     font-weight: 700;
+    letter-spacing: 2px;
 }
 
 .level-card p {
@@ -161,7 +301,7 @@ body {
 }
 
 .btn-pilih {
-    background: #ffa726;
+    background: linear-gradient(145deg, #ffb84d, #ffa726);
     border: none;
     color: white;
     font-weight: bold;
@@ -170,10 +310,16 @@ body {
     border-radius: 60px;
     box-shadow: 0 6px 0 #b15e00;
     cursor: pointer;
-    transition: all 0.1s;
+    transition: all 0.15s;
     border: 2px solid #ffdfa0;
     width: 100%;
     letter-spacing: 1px;
+    animation: btnGlow 2s infinite;
+}
+
+@keyframes btnGlow {
+    0%, 100% { box-shadow: 0 6px 0 #b15e00, 0 0 0 rgba(255, 167, 38, 0); }
+    50% { box-shadow: 0 6px 0 #b15e00, 0 0 25px rgba(255, 167, 38, 0.8); }
 }
 
 .btn-pilih:active {
@@ -189,16 +335,35 @@ body {
     margin-top: 10px;
 }
 
-/* Header Aktiviti */
+.pulse-text {
+    animation: pulseText 1.8s ease-in-out infinite;
+}
+
+@keyframes pulseText {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.06); opacity: 1; }
+}
+
+/* ========== HEADER AKTIVITI ========== */
 .activity-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #ffdca8;
+    background: linear-gradient(90deg, #ffdca8, #ffcc80);
     padding: 12px 18px;
     border-radius: 50px;
     margin-bottom: 15px;
     border: 3px solid #e09d4a;
+    animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.slide-in-top {
+    animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideDown {
+    0% { opacity: 0; transform: translateY(-40px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
 .btn-back {
@@ -211,12 +376,16 @@ body {
     font-size: 1rem;
     box-shadow: 0 4px 0 #b15e00;
     cursor: pointer;
-    transition: 0.1s;
+    transition: 0.15s;
     border: 2px solid #ffeac2;
 }
 
+.btn-back:hover {
+    transform: scale(1.05);
+}
+
 .btn-back:active {
-    transform: translateY(3px);
+    transform: translateY(3px) scale(0.98);
     box-shadow: 0 1px 0 #b15e00;
 }
 
@@ -225,6 +394,12 @@ body {
     color: #a64b00;
     text-transform: uppercase;
     font-weight: 700;
+    animation: letterPop 2s ease-in-out infinite;
+}
+
+@keyframes letterPop {
+    0%, 100% { letter-spacing: 2px; }
+    50% { letter-spacing: 4px; }
 }
 
 .activity-progress {
@@ -234,9 +409,15 @@ body {
     border-radius: 40px;
     font-weight: 600;
     font-size: 0.95rem;
+    animation: pulseBadge 2s infinite;
 }
 
-/* Tab */
+@keyframes pulseBadge {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* ========== TAB ========== */
 .activity-tabs {
     display: flex;
     flex-wrap: wrap;
@@ -246,7 +427,7 @@ body {
 }
 
 .tab-btn {
-    background: #ffe2b3;
+    background: linear-gradient(145deg, #ffe2b3, #ffd89c);
     border: 3px solid #d18d3c;
     padding: 8px 16px;
     border-radius: 40px;
@@ -254,26 +435,44 @@ body {
     color: #6b3c00;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: 0.1s;
+    transition: all 0.2s;
     box-shadow: 0 4px 0 #a76f2a;
+    animation: tabEntrance 0.5s backwards;
+}
+
+.tab-btn:nth-child(1) { animation-delay: 0.05s; }
+.tab-btn:nth-child(2) { animation-delay: 0.1s; }
+.tab-btn:nth-child(3) { animation-delay: 0.15s; }
+.tab-btn:nth-child(4) { animation-delay: 0.2s; }
+.tab-btn:nth-child(5) { animation-delay: 0.25s; }
+.tab-btn:nth-child(6) { animation-delay: 0.3s; }
+.tab-btn:nth-child(7) { animation-delay: 0.35s; }
+
+@keyframes tabEntrance {
+    0% { opacity: 0; transform: translateY(-20px) scale(0.8); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .tab-btn.active {
-    background: #ffb347;
+    background: linear-gradient(145deg, #ffb347, #ffa726);
     color: #3d2200;
     border-color: #b15e00;
-    box-shadow: 0 4px 0 #7a4100;
-    transform: scale(1.02);
+    box-shadow: 0 4px 0 #7a4100, 0 0 20px rgba(255, 179, 71, 0.6);
+    transform: scale(1.08);
+}
+
+.tab-btn:hover {
+    transform: translateY(-2px) scale(1.03);
 }
 
 .tab-btn:active {
-    transform: translateY(3px);
+    transform: translateY(3px) scale(0.98);
     box-shadow: 0 1px 0 #a76f2a;
 }
 
-/* Kandungan Aktiviti */
+/* ========== KANDUNGAN AKTIVITI ========== */
 .activity-content {
-    background: #fffbf0;
+    background: linear-gradient(145deg, #fffbf0, #fff4e0);
     border-radius: 50px;
     padding: 25px 20px;
     min-height: 400px;
@@ -284,9 +483,32 @@ body {
     align-items: center;
     justify-content: center;
     margin-bottom: 10px;
+    animation: contentEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Maklum Balas */
+.activity-content::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff9f4b, #ffd28c, #ff9f4b);
+    background-size: 200% 100%;
+    animation: gradientMove 3s linear infinite;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes contentEnter {
+    0% { opacity: 0; transform: scale(0.9) translateY(30px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ========== MAKLUM BALAS ========== */
 .feedback {
     text-align: center;
     font-size: 1.5rem;
@@ -294,17 +516,34 @@ body {
     min-height: 50px;
     color: #2e7d32;
     padding: 8px;
-    transition: 0.2s;
+    transition: 0.3s;
 }
 
-/* Gaya Umum Aktiviti */
+.feedback:not(:empty) {
+    animation: feedbackPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes feedbackPop {
+    0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+    60% { transform: scale(1.2) rotate(5deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* ========== TAJUK AKTIVITI ========== */
 .activity-title {
     font-size: 1.7rem;
     color: #b35100;
     margin-bottom: 15px;
     text-align: center;
+    animation: titleSlide 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+@keyframes titleSlide {
+    0% { opacity: 0; transform: translateX(-50px) rotate(-5deg); }
+    100% { opacity: 1; transform: translateX(0) rotate(0); }
+}
+
+/* ========== KAD-KAD ========== */
 .options-grid, .match-grid, .memory-grid, .puzzle-grid {
     display: flex;
     flex-wrap: wrap;
@@ -314,7 +553,7 @@ body {
 }
 
 .option-card, .match-card, .memory-card, .puzzle-piece {
-    background: #ffeac2;
+    background: linear-gradient(145deg, #ffeac2, #ffd89c);
     border-radius: 30px;
     padding: 15px 10px;
     width: 110px;
@@ -327,48 +566,75 @@ body {
     border: 4px solid #e6a14e;
     box-shadow: 0 8px 0 #b16f2a;
     cursor: pointer;
-    transition: 0.1s;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     color: #4e2c00;
+    animation: cardPop 0.5s backwards;
+    position: relative;
+    overflow: hidden;
+}
+
+.option-card:nth-child(1), .match-card:nth-child(1), .memory-card:nth-child(1), .puzzle-piece:nth-child(1) { animation-delay: 0.05s; }
+.option-card:nth-child(2), .match-card:nth-child(2), .memory-card:nth-child(2), .puzzle-piece:nth-child(2) { animation-delay: 0.1s; }
+.option-card:nth-child(3), .match-card:nth-child(3), .memory-card:nth-child(3), .puzzle-piece:nth-child(3) { animation-delay: 0.15s; }
+.option-card:nth-child(4), .match-card:nth-child(4), .memory-card:nth-child(4), .puzzle-piece:nth-child(4) { animation-delay: 0.2s; }
+
+@keyframes cardPop {
+    0% { opacity: 0; transform: scale(0.3) rotate(-180deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.option-card:hover, .match-card:hover, .memory-card:hover, .puzzle-piece:hover {
+    transform: translateY(-6px) scale(1.05);
+    box-shadow: 0 14px 0 #b16f2a, 0 20px 25px rgba(0, 0, 0, 0.15);
 }
 
 .option-card:active, .match-card:active, .memory-card:active, .puzzle-piece:active {
-    transform: translateY(5px);
+    transform: translateY(5px) scale(0.98);
     box-shadow: 0 3px 0 #b16f2a;
 }
 
 .selected {
-    background: #ffb86b;
+    background: linear-gradient(145deg, #ffb86b, #ff9f4b);
     border-color: #a64b00;
-    box-shadow: 0 0 0 5px #ffd58c;
+    box-shadow: 0 8px 0 #7a4100, 0 0 0 5px #ffd58c;
+    animation: selectedPulse 1s infinite;
+}
+
+@keyframes selectedPulse {
+    0%, 100% { box-shadow: 0 8px 0 #7a4100, 0 0 0 5px #ffd58c, 0 0 20px #ffd58c; }
+    50% { box-shadow: 0 8px 0 #7a4100, 0 0 0 8px #ffd58c, 0 0 35px #ffd58c; }
 }
 
 .correct-highlight {
-    background: #b9f6ca;
+    background: linear-gradient(145deg, #b9f6ca, #a5d6a7);
     border-color: #2e7d32;
-    box-shadow: 0 0 0 5px #a5d6a7;
-    animation: pulseGreen 0.5s;
+    box-shadow: 0 8px 0 #1b5e20, 0 0 0 5px #a5d6a7;
+    animation: correctAnim 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes correctAnim {
+    0% { transform: scale(1) rotate(0deg); }
+    30% { transform: scale(1.25) rotate(15deg); }
+    60% { transform: scale(1.15) rotate(-10deg); }
+    100% { transform: scale(1.1) rotate(0deg); }
 }
 
 .wrong-highlight {
-    background: #ffcdd2;
+    background: linear-gradient(145deg, #ffcdd2, #ef9a9a);
     border-color: #c62828;
-    box-shadow: 0 0 0 5px #ef9a9a;
-    animation: shake 0.4s;
+    box-shadow: 0 8px 0 #b71c1c, 0 0 0 5px #ef9a9a;
+    animation: wrongShake 0.5s;
 }
 
-@keyframes pulseGreen {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+@keyframes wrongShake {
+    0%, 100% { transform: translateX(0) rotate(0deg); }
+    20% { transform: translateX(-12px) rotate(-8deg); }
+    40% { transform: translateX(12px) rotate(8deg); }
+    60% { transform: translateX(-8px) rotate(-5deg); }
+    80% { transform: translateX(8px) rotate(5deg); }
 }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-8px); }
-    75% { transform: translateX(8px); }
-}
-
-/* Drag & Drop */
+/* ========== DRAG & DROP ========== */
 .drag-area {
     display: flex;
     flex-wrap: wrap;
@@ -379,7 +645,7 @@ body {
 }
 
 .drag-item {
-    background: #ffd89c;
+    background: linear-gradient(145deg, #ffd89c, #ffc97a);
     border-radius: 30px;
     padding: 15px;
     font-size: 3rem;
@@ -391,10 +657,22 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s;
+    animation: cardPop 0.5s backwards;
+}
+
+.drag-item:hover {
+    transform: translateY(-4px) scale(1.05) rotate(-2deg);
+    box-shadow: 0 10px 0 #9e611f;
+}
+
+.drag-item:active {
+    cursor: grabbing;
+    transform: scale(0.95) rotate(3deg);
 }
 
 .drop-zone {
-    background: #e7f0d0;
+    background: linear-gradient(145deg, #e7f0d0, #d4e4b0);
     border: 5px dashed #97b56b;
     border-radius: 30px;
     width: 120px;
@@ -405,41 +683,64 @@ body {
     font-size: 2rem;
     color: #4a5c2b;
     margin: 5px;
-    transition: 0.1s;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: cardPop 0.6s backwards;
 }
 
 .drop-zone.hover {
-    background: #c5e0a0;
+    background: linear-gradient(145deg, #c5e0a0, #a8d078);
     border-color: #5b8c2a;
+    transform: scale(1.15) rotate(3deg);
+    box-shadow: 0 0 30px rgba(91, 140, 42, 0.6);
 }
 
-/* Memori */
+/* ========== MEMORI ========== */
 .memory-card {
     width: 100px;
     height: 100px;
     font-size: 3rem;
-    background: #b9a6ff;
+    background: linear-gradient(145deg, #b9a6ff, #9c85f0);
     border-color: #6a4fc9;
     box-shadow: 0 8px 0 #4e35a0;
     color: white;
-    transition: 0.2s;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-style: preserve-3d;
+}
+
+.memory-card:hover {
+    transform: rotateY(15deg) scale(1.05);
 }
 
 .memory-card.flipped {
-    background: #fff1d0;
+    background: linear-gradient(145deg, #fff1d0, #ffe6b3);
     color: #4e2c00;
     border-color: #e6a14e;
     box-shadow: 0 8px 0 #b16f2a;
+    animation: flipIn 0.5s;
+}
+
+@keyframes flipIn {
+    0% { transform: rotateY(0deg) scale(1); }
+    50% { transform: rotateY(90deg) scale(1.1); }
+    100% { transform: rotateY(0deg) scale(1.1); }
 }
 
 .memory-card.matched {
-    background: #a5d6a7;
+    background: linear-gradient(145deg, #a5d6a7, #81c784);
     border-color: #2e7d32;
     box-shadow: 0 8px 0 #1b5e20;
     color: #1b5e20;
+    animation: matchedBounce 0.7s;
 }
 
-/* Puzzle */
+@keyframes matchedBounce {
+    0% { transform: scale(1.1); }
+    30% { transform: scale(1.3) rotate(10deg); }
+    60% { transform: scale(1.15) rotate(-10deg); }
+    100% { transform: scale(1.1) rotate(0deg); }
+}
+
+/* ========== PUZZLE ========== */
 .puzzle-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -452,34 +753,61 @@ body {
     height: 110px;
     border-radius: 20px;
     font-size: 3rem;
-    background: #ffeac2;
+    background: linear-gradient(145deg, #ffeac2, #ffd89c);
     display: flex;
     align-items: center;
     justify-content: center;
     border: 4px solid #e6a14e;
     box-shadow: 0 6px 0 #b16f2a;
     cursor: pointer;
+    transition: all 0.25s;
 }
 
-/* Responsive */
+.puzzle-piece:hover {
+    transform: scale(1.08) rotate(3deg);
+    box-shadow: 0 10px 0 #b16f2a;
+}
+
+/* ========== ANIMASI TAMBAHAN ========== */
+.bouncing {
+    display: inline-block;
+    animation: bounceIcon 1.5s infinite;
+}
+
+@keyframes bounceIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* ========== RESPONSIVE ========== */
 @media (max-width: 700px) {
     #app { padding: 10px; border-radius: 40px; }
-    .dskp-info h1 { font-size: 1.4rem; }
-    .dskp-detail { font-size: 0.9rem; }
+    .dskp-info h1 { font-size: 1.3rem; }
+    .dskp-detail { font-size: 0.85rem; }
     .level-card { width: 160px; padding: 15px 8px; }
     .level-icon { font-size: 3rem; }
-    .level-card h3 { font-size: 1.5rem; }
+    .level-card h3 { font-size: 1.4rem; }
     .activity-tabs .tab-btn { font-size: 0.7rem; padding: 6px 10px; }
     .activity-content { padding: 15px 10px; min-height: 350px; }
     .option-card, .match-card, .memory-card, .puzzle-piece { width: 80px; height: 80px; font-size: 2.2rem; }
     .drop-zone { width: 85px; height: 85px; }
     .drag-item { width: 80px; height: 80px; font-size: 2.2rem; }
-    .sound-toggle { width: 40px; height: 40px; font-size: 1.2rem; }
+    .sound-toggle { width: 40px; height: 40px; font-size: 1.1rem; }
+    .section-title { font-size: 1.3rem; }
+    .activity-title { font-size: 1.3rem; }
+    .feedback { font-size: 1.2rem; }
+    .floating-emoji { font-size: 1.6rem; }
 }
 
 @media (max-width: 450px) {
     .level-container { gap: 10px; }
     .level-card { width: 130px; }
+    .level-icon { font-size: 2.3rem; }
+    .level-card h3 { font-size: 1.1rem; }
+    .level-card p { font-size: 0.75rem; }
+    .btn-pilih { font-size: 1rem; padding: 8px 15px; }
     .activity-header { flex-wrap: wrap; justify-content: center; gap: 6px; }
     .tab-btn { font-size: 0.6rem; padding: 4px 8px; }
+    .hint { font-size: 0.95rem; }
+    .floating-emoji { font-size: 1.2rem; }
 }
