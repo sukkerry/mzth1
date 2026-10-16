@@ -27,6 +27,7 @@ body {
     overflow: hidden;
     border: 6px solid #ffb347;
     padding: 20px 20px 30px;
+    position: relative;
 }
 
 /* Header */
@@ -37,6 +38,7 @@ body {
     border-radius: 40px 40px 20px 20px;
     margin-bottom: 15px;
     border: 4px dashed #ff9f4b;
+    position: relative;
 }
 
 .dskp-info h1 {
@@ -60,6 +62,34 @@ body {
 .dskp-sub {
     font-size: 0.9rem;
     color: #7a4a1b;
+}
+
+/* Butang bunyi */
+.sound-toggle {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #ffb347;
+    border: 3px solid #b15e00;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    color: #4f2b00;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #b15e00;
+    transition: 0.1s;
+}
+
+.sound-toggle:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #b15e00;
+}
+
+.sound-toggle.muted {
+    background: #ccc;
+    border-color: #888;
+    color: #666;
 }
 
 /* Skrin */
@@ -316,12 +346,26 @@ body {
     background: #b9f6ca;
     border-color: #2e7d32;
     box-shadow: 0 0 0 5px #a5d6a7;
+    animation: pulseGreen 0.5s;
 }
 
 .wrong-highlight {
     background: #ffcdd2;
     border-color: #c62828;
     box-shadow: 0 0 0 5px #ef9a9a;
+    animation: shake 0.4s;
+}
+
+@keyframes pulseGreen {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
 }
 
 /* Drag & Drop */
@@ -430,6 +474,7 @@ body {
     .option-card, .match-card, .memory-card, .puzzle-piece { width: 80px; height: 80px; font-size: 2.2rem; }
     .drop-zone { width: 85px; height: 85px; }
     .drag-item { width: 80px; height: 80px; font-size: 2.2rem; }
+    .sound-toggle { width: 40px; height: 40px; font-size: 1.2rem; }
 }
 
 @media (max-width: 450px) {
