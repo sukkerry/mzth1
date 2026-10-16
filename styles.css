@@ -19,7 +19,6 @@ body {
     position: relative;
 }
 
-/* ========== LATAR BELAKANG BERANIMASI ========== */
 .animated-bg {
     position: fixed;
     top: 0;
@@ -43,31 +42,19 @@ body {
 }
 
 @keyframes floatUp {
-    0% {
-        transform: translateY(0) rotate(0deg) scale(1);
-        opacity: 0;
-    }
-    10% {
-        opacity: 0.35;
-    }
-    90% {
-        opacity: 0.35;
-    }
-    100% {
-        transform: translateY(-110vh) rotate(360deg) scale(1.3);
-        opacity: 0;
-    }
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
+    10% { opacity: 0.35; }
+    90% { opacity: 0.35; }
+    100% { transform: translateY(-110vh) rotate(360deg) scale(1.3); opacity: 0; }
 }
 
-/* ========== KOTAK APP ========== */
 #app {
     max-width: 1100px;
     width: 100%;
     background: rgba(255, 255, 255, 0.78);
     backdrop-filter: blur(12px);
     border-radius: 60px 60px 40px 40px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2),
-                0 0 60px rgba(255, 179, 71, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 0 60px rgba(255, 179, 71, 0.3);
     overflow: hidden;
     border: 6px solid #ffb347;
     padding: 20px 20px 30px;
@@ -81,7 +68,6 @@ body {
     100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* ========== HEADER ========== */
 .app-header {
     text-align: center;
     background: linear-gradient(135deg, #fff2d7 0%, #ffe6b3 100%);
@@ -98,348 +84,145 @@ body {
     50% { box-shadow: 0 0 30px rgba(255, 159, 75, 0.5); }
 }
 
-.dskp-info h1 {
-    font-size: 1.8rem;
-    color: #c44b00;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
+.dskp-info h1 { font-size: 1.8rem; color: #c44b00; font-weight: 700; letter-spacing: 1px; }
 .dskp-detail {
-    font-size: 1.1rem;
-    background: #ffe6b3;
-    padding: 8px 12px;
-    border-radius: 30px;
-    display: inline-block;
-    margin: 8px 0 4px;
-    color: #5e2e00;
-    font-weight: 600;
+    font-size: 1.1rem; background: #ffe6b3; padding: 8px 12px; border-radius: 30px;
+    display: inline-block; margin: 8px 0 4px; color: #5e2e00; font-weight: 600;
     animation: shimmer 2.5s ease-in-out infinite;
 }
-
 @keyframes shimmer {
     0%, 100% { background: #ffe6b3; }
     50% { background: #ffd28c; box-shadow: 0 0 15px #ffd28c; }
 }
+.dskp-sub { font-size: 0.9rem; color: #7a4a1b; }
 
-.dskp-sub {
-    font-size: 0.9rem;
-    color: #7a4a1b;
-}
-
-/* ========== BUTANG BUNYI ========== */
 .sound-toggle {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #ffb347;
-    border: 3px solid #b15e00;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
-    color: #4f2b00;
-    cursor: pointer;
-    box-shadow: 0 4px 0 #b15e00;
-    transition: 0.2s;
-    animation: pulseBtn 2s infinite;
+    position: absolute; top: 15px; right: 15px; background: #ffb347;
+    border: 3px solid #b15e00; border-radius: 50%; width: 50px; height: 50px;
+    font-size: 1.5rem; color: #4f2b00; cursor: pointer;
+    box-shadow: 0 4px 0 #b15e00; transition: 0.2s; animation: pulseBtn 2s infinite;
 }
-
 @keyframes pulseBtn {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.08); }
 }
+.sound-toggle:active { transform: translateY(3px) scale(0.95); box-shadow: 0 1px 0 #b15e00; }
+.sound-toggle.muted { background: #ccc; border-color: #888; color: #666; animation: none; }
 
-.sound-toggle:active {
-    transform: translateY(3px) scale(0.95);
-    box-shadow: 0 1px 0 #b15e00;
-}
-
-.sound-toggle.muted {
-    background: #ccc;
-    border-color: #888;
-    color: #666;
-    animation: none;
-}
-
-/* ========== SKRIN ========== */
-.screen {
-    display: none;
-}
-
-.screen.active {
-    display: block;
-    animation: screenEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
+.screen { display: none; }
+.screen.active { display: block; animation: screenEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
 @keyframes screenEnter {
     0% { opacity: 0; transform: translateX(60px) scale(0.9); }
     100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 
-/* ========== TAJUK SEKSYEN ========== */
 .section-title {
-    text-align: center;
-    font-size: 1.8rem;
-    color: #a64b00;
-    margin: 15px 0 20px;
-    text-shadow: 2px 2px 0 #ffd28c;
-    animation: titleBounce 2s ease-in-out infinite;
+    text-align: center; font-size: 1.8rem; color: #a64b00; margin: 15px 0 20px;
+    text-shadow: 2px 2px 0 #ffd28c; animation: titleBounce 2s ease-in-out infinite;
 }
-
 @keyframes titleBounce {
     0%, 100% { transform: translateY(0) scale(1); }
     50% { transform: translateY(-6px) scale(1.03); }
 }
-
-.pop-in {
-    animation: popIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
+.pop-in { animation: popIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1); }
 @keyframes popIn {
     0% { opacity: 0; transform: scale(0.3); }
     70% { transform: scale(1.1); }
     100% { opacity: 1; transform: scale(1); }
 }
+.spinning { display: inline-block; animation: spin 4s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-.spinning {
-    display: inline-block;
-    animation: spin 4s linear infinite;
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* ========== PILIH LEVEL ========== */
-.level-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 25px;
-    margin: 30px 0;
-}
-
+.level-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; margin: 30px 0; }
 .level-card {
     background: linear-gradient(145deg, #fff9ed, #ffeac2);
-    border-radius: 40px;
-    padding: 25px 15px;
-    width: 220px;
-    text-align: center;
+    border-radius: 40px; padding: 25px 15px; width: 220px; text-align: center;
     box-shadow: 0 12px 0 #c27e3a, 0 15px 20px rgba(0, 0, 0, 0.2);
     border: 3px solid #ffb347;
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
+    cursor: pointer; position: relative; overflow: hidden;
 }
-
 .level-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
     background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-    transform: rotate(45deg) translateX(-100%);
-    transition: transform 0.6s;
+    transform: rotate(45deg) translateX(-100%); transition: transform 0.6s;
 }
-
-.level-card:hover::before {
-    transform: rotate(45deg) translateX(100%);
-}
-
-.float-anim {
-    animation: floatCard 3s ease-in-out infinite;
-    animation-delay: var(--float-delay, 0s);
-}
-
+.level-card:hover::before { transform: rotate(45deg) translateX(100%); }
+.float-anim { animation: floatCard 3s ease-in-out infinite; animation-delay: var(--float-delay, 0s); }
 @keyframes floatCard {
     0%, 100% { transform: translateY(0) rotate(-0.5deg); }
     50% { transform: translateY(-12px) rotate(0.5deg); }
 }
-
-.level-card:hover {
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 20px 0 #c27e3a, 0 25px 35px rgba(0, 0, 0, 0.25);
-}
-
-.level-card:active {
-    transform: translateY(6px) scale(0.98);
-    box-shadow: 0 6px 0 #c27e3a, 0 10px 15px rgba(0, 0, 0, 0.2);
-}
-
-.level-icon {
-    font-size: 4.5rem;
-    line-height: 1;
-    filter: drop-shadow(4px 6px 0 rgba(0,0,0,0.1));
-}
-
-.bounce-slow {
-    animation: bounceSlow 2.5s ease-in-out infinite;
-}
-
+.level-card:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 20px 0 #c27e3a, 0 25px 35px rgba(0, 0, 0, 0.25); }
+.level-card:active { transform: translateY(6px) scale(0.98); box-shadow: 0 6px 0 #c27e3a, 0 10px 15px rgba(0, 0, 0, 0.2); }
+.level-icon { font-size: 4.5rem; line-height: 1; filter: drop-shadow(4px 6px 0 rgba(0,0,0,0.1)); }
+.bounce-slow { animation: bounceSlow 2.5s ease-in-out infinite; }
 @keyframes bounceSlow {
     0%, 100% { transform: translateY(0) scale(1); }
     50% { transform: translateY(-10px) scale(1.1); }
 }
-
-.level-card h3 {
-    font-size: 1.9rem;
-    color: #b35100;
-    margin: 10px 0 5px;
-    font-weight: 700;
-    letter-spacing: 2px;
-}
-
-.level-card p {
-    color: #6b4b2b;
-    font-size: 1rem;
-    margin-bottom: 15px;
-}
-
+.level-card h3 { font-size: 1.9rem; color: #b35100; margin: 10px 0 5px; font-weight: 700; letter-spacing: 2px; }
+.level-card p { color: #6b4b2b; font-size: 1rem; margin-bottom: 15px; }
 .btn-pilih {
-    background: linear-gradient(145deg, #ffb84d, #ffa726);
-    border: none;
-    color: white;
-    font-weight: bold;
-    font-size: 1.3rem;
-    padding: 12px 30px;
-    border-radius: 60px;
-    box-shadow: 0 6px 0 #b15e00;
-    cursor: pointer;
-    transition: all 0.15s;
-    border: 2px solid #ffdfa0;
-    width: 100%;
-    letter-spacing: 1px;
-    animation: btnGlow 2s infinite;
+    background: linear-gradient(145deg, #ffb84d, #ffa726); border: none; color: white;
+    font-weight: bold; font-size: 1.3rem; padding: 12px 30px; border-radius: 60px;
+    box-shadow: 0 6px 0 #b15e00; cursor: pointer; transition: all 0.15s;
+    border: 2px solid #ffdfa0; width: 100%; letter-spacing: 1px; animation: btnGlow 2s infinite;
 }
-
 @keyframes btnGlow {
     0%, 100% { box-shadow: 0 6px 0 #b15e00, 0 0 0 rgba(255, 167, 38, 0); }
     50% { box-shadow: 0 6px 0 #b15e00, 0 0 25px rgba(255, 167, 38, 0.8); }
 }
-
-.btn-pilih:active {
-    transform: translateY(4px);
-    box-shadow: 0 2px 0 #b15e00;
-}
-
-.hint {
-    text-align: center;
-    color: #7a4a1b;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-top: 10px;
-}
-
-.pulse-text {
-    animation: pulseText 1.8s ease-in-out infinite;
-}
-
+.btn-pilih:active { transform: translateY(4px); box-shadow: 0 2px 0 #b15e00; }
+.hint { text-align: center; color: #7a4a1b; font-size: 1.2rem; font-weight: 600; margin-top: 10px; }
+.pulse-text { animation: pulseText 1.8s ease-in-out infinite; }
 @keyframes pulseText {
     0%, 100% { transform: scale(1); opacity: 0.9; }
     50% { transform: scale(1.06); opacity: 1; }
 }
 
-/* ========== HEADER AKTIVITI ========== */
 .activity-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(90deg, #ffdca8, #ffcc80);
-    padding: 12px 18px;
-    border-radius: 50px;
-    margin-bottom: 15px;
-    border: 3px solid #e09d4a;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(90deg, #ffdca8, #ffcc80); padding: 12px 18px;
+    border-radius: 50px; margin-bottom: 15px; border: 3px solid #e09d4a;
     animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-
-.slide-in-top {
-    animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
+.slide-in-top { animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
 @keyframes slideDown {
     0% { opacity: 0; transform: translateY(-40px); }
     100% { opacity: 1; transform: translateY(0); }
 }
-
 .btn-back {
-    background: #ffb26b;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 40px;
-    font-weight: bold;
-    color: #4f2b00;
-    font-size: 1rem;
-    box-shadow: 0 4px 0 #b15e00;
-    cursor: pointer;
-    transition: 0.15s;
-    border: 2px solid #ffeac2;
+    background: #ffb26b; border: none; padding: 10px 18px; border-radius: 40px;
+    font-weight: bold; color: #4f2b00; font-size: 1rem; box-shadow: 0 4px 0 #b15e00;
+    cursor: pointer; transition: 0.15s; border: 2px solid #ffeac2;
 }
-
-.btn-back:hover {
-    transform: scale(1.05);
-}
-
-.btn-back:active {
-    transform: translateY(3px) scale(0.98);
-    box-shadow: 0 1px 0 #b15e00;
-}
-
+.btn-back:hover { transform: scale(1.05); }
+.btn-back:active { transform: translateY(3px) scale(0.98); box-shadow: 0 1px 0 #b15e00; }
 #current-level-title {
-    font-size: 1.6rem;
-    color: #a64b00;
-    text-transform: uppercase;
-    font-weight: 700;
+    font-size: 1.6rem; color: #a64b00; text-transform: uppercase; font-weight: 700;
     animation: letterPop 2s ease-in-out infinite;
 }
-
 @keyframes letterPop {
     0%, 100% { letter-spacing: 2px; }
     50% { letter-spacing: 4px; }
 }
-
 .activity-progress {
-    background: #b35100;
-    color: white;
-    padding: 6px 16px;
-    border-radius: 40px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    animation: pulseBadge 2s infinite;
+    background: #b35100; color: white; padding: 6px 16px; border-radius: 40px;
+    font-weight: 600; font-size: 0.95rem; animation: pulseBadge 2s infinite;
 }
-
 @keyframes pulseBadge {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.05); }
 }
 
-/* ========== TAB ========== */
-.activity-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
+.activity-tabs { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; }
 .tab-btn {
-    background: linear-gradient(145deg, #ffe2b3, #ffd89c);
-    border: 3px solid #d18d3c;
-    padding: 8px 16px;
-    border-radius: 40px;
-    font-weight: 600;
-    color: #6b3c00;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 4px 0 #a76f2a;
-    animation: tabEntrance 0.5s backwards;
+    background: linear-gradient(145deg, #ffe2b3, #ffd89c); border: 3px solid #d18d3c;
+    padding: 8px 16px; border-radius: 40px; font-weight: 600; color: #6b3c00;
+    font-size: 0.9rem; cursor: pointer; transition: all 0.2s;
+    box-shadow: 0 4px 0 #a76f2a; animation: tabEntrance 0.5s backwards;
 }
-
 .tab-btn:nth-child(1) { animation-delay: 0.05s; }
 .tab-btn:nth-child(2) { animation-delay: 0.1s; }
 .tab-btn:nth-child(3) { animation-delay: 0.15s; }
@@ -447,185 +230,107 @@ body {
 .tab-btn:nth-child(5) { animation-delay: 0.25s; }
 .tab-btn:nth-child(6) { animation-delay: 0.3s; }
 .tab-btn:nth-child(7) { animation-delay: 0.35s; }
-
 @keyframes tabEntrance {
     0% { opacity: 0; transform: translateY(-20px) scale(0.8); }
     100% { opacity: 1; transform: translateY(0) scale(1); }
 }
-
 .tab-btn.active {
-    background: linear-gradient(145deg, #ffb347, #ffa726);
-    color: #3d2200;
-    border-color: #b15e00;
-    box-shadow: 0 4px 0 #7a4100, 0 0 20px rgba(255, 179, 71, 0.6);
+    background: linear-gradient(145deg, #ffb347, #ffa726); color: #3d2200;
+    border-color: #b15e00; box-shadow: 0 4px 0 #7a4100, 0 0 20px rgba(255, 179, 71, 0.6);
     transform: scale(1.08);
 }
+.tab-btn:hover { transform: translateY(-2px) scale(1.03); }
+.tab-btn:active { transform: translateY(3px) scale(0.98); box-shadow: 0 1px 0 #a76f2a; }
 
-.tab-btn:hover {
-    transform: translateY(-2px) scale(1.03);
-}
-
-.tab-btn:active {
-    transform: translateY(3px) scale(0.98);
-    box-shadow: 0 1px 0 #a76f2a;
-}
-
-/* ========== KANDUNGAN AKTIVITI ========== */
 .activity-content {
     background: linear-gradient(145deg, #fffbf0, #fff4e0);
-    border-radius: 50px;
-    padding: 25px 20px;
-    min-height: 400px;
+    border-radius: 50px; padding: 25px 20px; min-height: 400px;
     border: 5px solid #ffc97a;
     box-shadow: inset 0 0 0 4px #fff4e0, 0 10px 20px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-    animation: contentEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative;
-    overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    margin-bottom: 10px; animation: contentEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative; overflow: hidden;
 }
-
 .activity-content::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
     background: linear-gradient(90deg, #ff9f4b, #ffd28c, #ff9f4b);
-    background-size: 200% 100%;
-    animation: gradientMove 3s linear infinite;
+    background-size: 200% 100%; animation: gradientMove 3s linear infinite;
 }
-
 @keyframes gradientMove {
     0% { background-position: 0% 0; }
     100% { background-position: 200% 0; }
 }
-
 @keyframes contentEnter {
     0% { opacity: 0; transform: scale(0.9) translateY(30px); }
     100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* ========== MAKLUM BALAS ========== */
-.feedback {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: 700;
-    min-height: 50px;
-    color: #2e7d32;
-    padding: 8px;
-    transition: 0.3s;
-}
-
-.feedback:not(:empty) {
-    animation: feedbackPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
+.feedback { text-align: center; font-size: 1.5rem; font-weight: 700; min-height: 50px; color: #2e7d32; padding: 8px; transition: 0.3s; }
+.feedback:not(:empty) { animation: feedbackPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
 @keyframes feedbackPop {
     0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
     60% { transform: scale(1.2) rotate(5deg); }
     100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
-/* ========== TAJUK AKTIVITI ========== */
 .activity-title {
-    font-size: 1.7rem;
-    color: #b35100;
-    margin-bottom: 15px;
-    text-align: center;
+    font-size: 1.7rem; color: #b35100; margin-bottom: 15px; text-align: center;
     animation: titleSlide 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-
 @keyframes titleSlide {
     0% { opacity: 0; transform: translateX(-50px) rotate(-5deg); }
     100% { opacity: 1; transform: translateX(0) rotate(0); }
 }
 
-/* ========== KAD-KAD ========== */
-.options-grid, .match-grid, .memory-grid, .puzzle-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    margin: 15px 0;
-}
-
+.options-grid, .match-grid, .memory-grid, .puzzle-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin: 15px 0; }
 .option-card, .match-card, .memory-card, .puzzle-piece {
-    background: linear-gradient(145deg, #ffeac2, #ffd89c);
-    border-radius: 30px;
-    padding: 15px 10px;
-    width: 110px;
-    height: 110px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    border: 4px solid #e6a14e;
-    box-shadow: 0 8px 0 #b16f2a;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    color: #4e2c00;
-    animation: cardPop 0.5s backwards;
-    position: relative;
-    overflow: hidden;
+    background: linear-gradient(145deg, #ffeac2, #ffd89c); border-radius: 30px;
+    padding: 15px 10px; width: 110px; height: 110px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 3rem; border: 4px solid #e6a14e; box-shadow: 0 8px 0 #b16f2a;
+    cursor: pointer; transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    color: #4e2c00; animation: cardPop 0.5s backwards;
+    position: relative; overflow: hidden;
 }
-
 .option-card:nth-child(1), .match-card:nth-child(1), .memory-card:nth-child(1), .puzzle-piece:nth-child(1) { animation-delay: 0.05s; }
 .option-card:nth-child(2), .match-card:nth-child(2), .memory-card:nth-child(2), .puzzle-piece:nth-child(2) { animation-delay: 0.1s; }
 .option-card:nth-child(3), .match-card:nth-child(3), .memory-card:nth-child(3), .puzzle-piece:nth-child(3) { animation-delay: 0.15s; }
 .option-card:nth-child(4), .match-card:nth-child(4), .memory-card:nth-child(4), .puzzle-piece:nth-child(4) { animation-delay: 0.2s; }
-
 @keyframes cardPop {
     0% { opacity: 0; transform: scale(0.3) rotate(-180deg); }
     100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
-
 .option-card:hover, .match-card:hover, .memory-card:hover, .puzzle-piece:hover {
     transform: translateY(-6px) scale(1.05);
     box-shadow: 0 14px 0 #b16f2a, 0 20px 25px rgba(0, 0, 0, 0.15);
 }
-
 .option-card:active, .match-card:active, .memory-card:active, .puzzle-piece:active {
-    transform: translateY(5px) scale(0.98);
-    box-shadow: 0 3px 0 #b16f2a;
+    transform: translateY(5px) scale(0.98); box-shadow: 0 3px 0 #b16f2a;
 }
 
 .selected {
-    background: linear-gradient(145deg, #ffb86b, #ff9f4b);
-    border-color: #a64b00;
-    box-shadow: 0 8px 0 #7a4100, 0 0 0 5px #ffd58c;
-    animation: selectedPulse 1s infinite;
+    background: linear-gradient(145deg, #ffb86b, #ff9f4b); border-color: #a64b00;
+    box-shadow: 0 8px 0 #7a4100, 0 0 0 5px #ffd58c; animation: selectedPulse 1s infinite;
 }
-
 @keyframes selectedPulse {
     0%, 100% { box-shadow: 0 8px 0 #7a4100, 0 0 0 5px #ffd58c, 0 0 20px #ffd58c; }
     50% { box-shadow: 0 8px 0 #7a4100, 0 0 0 8px #ffd58c, 0 0 35px #ffd58c; }
 }
-
 .correct-highlight {
-    background: linear-gradient(145deg, #b9f6ca, #a5d6a7);
-    border-color: #2e7d32;
+    background: linear-gradient(145deg, #b9f6ca, #a5d6a7); border-color: #2e7d32;
     box-shadow: 0 8px 0 #1b5e20, 0 0 0 5px #a5d6a7;
     animation: correctAnim 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-
 @keyframes correctAnim {
     0% { transform: scale(1) rotate(0deg); }
     30% { transform: scale(1.25) rotate(15deg); }
     60% { transform: scale(1.15) rotate(-10deg); }
     100% { transform: scale(1.1) rotate(0deg); }
 }
-
 .wrong-highlight {
-    background: linear-gradient(145deg, #ffcdd2, #ef9a9a);
-    border-color: #c62828;
-    box-shadow: 0 8px 0 #b71c1c, 0 0 0 5px #ef9a9a;
-    animation: wrongShake 0.5s;
+    background: linear-gradient(145deg, #ffcdd2, #ef9a9a); border-color: #c62828;
+    box-shadow: 0 8px 0 #b71c1c, 0 0 0 5px #ef9a9a; animation: wrongShake 0.5s;
 }
-
 @keyframes wrongShake {
     0%, 100% { transform: translateX(0) rotate(0deg); }
     20% { transform: translateX(-12px) rotate(-8deg); }
@@ -634,105 +339,50 @@ body {
     80% { transform: translateX(8px) rotate(5deg); }
 }
 
-/* ========== DRAG & DROP ========== */
-.drag-area {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin: 20px 0;
-    min-height: 120px;
-}
-
+.drag-area { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 20px 0; min-height: 120px; }
 .drag-item {
-    background: linear-gradient(145deg, #ffd89c, #ffc97a);
-    border-radius: 30px;
-    padding: 15px;
-    font-size: 3rem;
-    border: 4px solid #cc8b3c;
-    box-shadow: 0 6px 0 #9e611f;
-    cursor: grab;
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    animation: cardPop 0.5s backwards;
+    background: linear-gradient(145deg, #ffd89c, #ffc97a); border-radius: 30px;
+    padding: 15px; font-size: 3rem; border: 4px solid #cc8b3c;
+    box-shadow: 0 6px 0 #9e611f; cursor: grab; width: 100px; height: 100px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; animation: cardPop 0.5s backwards;
 }
-
-.drag-item:hover {
-    transform: translateY(-4px) scale(1.05) rotate(-2deg);
-    box-shadow: 0 10px 0 #9e611f;
-}
-
-.drag-item:active {
-    cursor: grabbing;
-    transform: scale(0.95) rotate(3deg);
-}
-
+.drag-item:hover { transform: translateY(-4px) scale(1.05) rotate(-2deg); box-shadow: 0 10px 0 #9e611f; }
+.drag-item:active { cursor: grabbing; transform: scale(0.95) rotate(3deg); }
 .drop-zone {
-    background: linear-gradient(145deg, #e7f0d0, #d4e4b0);
-    border: 5px dashed #97b56b;
-    border-radius: 30px;
-    width: 120px;
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: #4a5c2b;
-    margin: 5px;
+    background: linear-gradient(145deg, #e7f0d0, #d4e4b0); border: 5px dashed #97b56b;
+    border-radius: 30px; width: 120px; height: 120px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; color: #4a5c2b; margin: 5px;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     animation: cardPop 0.6s backwards;
 }
-
 .drop-zone.hover {
-    background: linear-gradient(145deg, #c5e0a0, #a8d078);
-    border-color: #5b8c2a;
-    transform: scale(1.15) rotate(3deg);
-    box-shadow: 0 0 30px rgba(91, 140, 42, 0.6);
+    background: linear-gradient(145deg, #c5e0a0, #a8d078); border-color: #5b8c2a;
+    transform: scale(1.15) rotate(3deg); box-shadow: 0 0 30px rgba(91, 140, 42, 0.6);
 }
 
-/* ========== MEMORI ========== */
 .memory-card {
-    width: 100px;
-    height: 100px;
-    font-size: 3rem;
-    background: linear-gradient(145deg, #b9a6ff, #9c85f0);
-    border-color: #6a4fc9;
-    box-shadow: 0 8px 0 #4e35a0;
-    color: white;
+    width: 100px; height: 100px; font-size: 3rem;
+    background: linear-gradient(145deg, #b9a6ff, #9c85f0); border-color: #6a4fc9;
+    box-shadow: 0 8px 0 #4e35a0; color: white;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     transform-style: preserve-3d;
 }
-
-.memory-card:hover {
-    transform: rotateY(15deg) scale(1.05);
-}
-
+.memory-card:hover { transform: rotateY(15deg) scale(1.05); }
 .memory-card.flipped {
-    background: linear-gradient(145deg, #fff1d0, #ffe6b3);
-    color: #4e2c00;
-    border-color: #e6a14e;
-    box-shadow: 0 8px 0 #b16f2a;
-    animation: flipIn 0.5s;
+    background: linear-gradient(145deg, #fff1d0, #ffe6b3); color: #4e2c00;
+    border-color: #e6a14e; box-shadow: 0 8px 0 #b16f2a; animation: flipIn 0.5s;
 }
-
 @keyframes flipIn {
     0% { transform: rotateY(0deg) scale(1); }
     50% { transform: rotateY(90deg) scale(1.1); }
     100% { transform: rotateY(0deg) scale(1.1); }
 }
-
 .memory-card.matched {
-    background: linear-gradient(145deg, #a5d6a7, #81c784);
-    border-color: #2e7d32;
-    box-shadow: 0 8px 0 #1b5e20;
-    color: #1b5e20;
-    animation: matchedBounce 0.7s;
+    background: linear-gradient(145deg, #a5d6a7, #81c784); border-color: #2e7d32;
+    box-shadow: 0 8px 0 #1b5e20; color: #1b5e20; animation: matchedBounce 0.7s;
 }
-
 @keyframes matchedBounce {
     0% { transform: scale(1.1); }
     30% { transform: scale(1.3) rotate(10deg); }
@@ -740,46 +390,22 @@ body {
     100% { transform: scale(1.1) rotate(0deg); }
 }
 
-/* ========== PUZZLE ========== */
-.puzzle-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    max-width: 260px;
-}
-
+.puzzle-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-width: 260px; }
 .puzzle-piece {
-    width: 110px;
-    height: 110px;
-    border-radius: 20px;
-    font-size: 3rem;
+    width: 110px; height: 110px; border-radius: 20px; font-size: 3rem;
     background: linear-gradient(145deg, #ffeac2, #ffd89c);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 4px solid #e6a14e;
-    box-shadow: 0 6px 0 #b16f2a;
-    cursor: pointer;
-    transition: all 0.25s;
+    display: flex; align-items: center; justify-content: center;
+    border: 4px solid #e6a14e; box-shadow: 0 6px 0 #b16f2a;
+    cursor: pointer; transition: all 0.25s;
 }
+.puzzle-piece:hover { transform: scale(1.08) rotate(3deg); box-shadow: 0 10px 0 #b16f2a; }
 
-.puzzle-piece:hover {
-    transform: scale(1.08) rotate(3deg);
-    box-shadow: 0 10px 0 #b16f2a;
-}
-
-/* ========== ANIMASI TAMBAHAN ========== */
-.bouncing {
-    display: inline-block;
-    animation: bounceIcon 1.5s infinite;
-}
-
+.bouncing { display: inline-block; animation: bounceIcon 1.5s infinite; }
 @keyframes bounceIcon {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }
 }
 
-/* ========== RESPONSIVE ========== */
 @media (max-width: 700px) {
     #app { padding: 10px; border-radius: 40px; }
     .dskp-info h1 { font-size: 1.3rem; }
@@ -798,7 +424,6 @@ body {
     .feedback { font-size: 1.2rem; }
     .floating-emoji { font-size: 1.6rem; }
 }
-
 @media (max-width: 450px) {
     .level-container { gap: 10px; }
     .level-card { width: 130px; }
