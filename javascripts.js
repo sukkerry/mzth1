@@ -1,79 +1,216 @@
-/* javascripts.js — Audio Sebenar Mixkit + Animasi + 3 Level × 7 Aktiviti */
+/* javascripts.js — Audio Sebenar + Web Audio Fallback + Animasi + 3 Level × 7 Aktiviti */
 
-// ===================== SISTEM AUDIO (MIXKIT SOUND EFFECTS) =====================
+// ===================== SISTEM AUDIO DUAL =====================
+// Guna Web Audio API sebagai fallback yang PASTI berbunyi
 const SoundSystem = {
+    ctx: null,
     enabled: true,
-    audioElements: {},
+    mp3Elements: {},
+    useMP3: false,
     
-    // URL audio sebenar dari Mixkit
+    // URL MP3 sebenar dari sumber yang dibenarkan hotlink
+    // Menggunakan GitHub raw + sound effects percuma
     urls: {
-        // ===== BUNYI HAIWAN =====
-        kucing: 'https://assets.mixkit.co/sfx/preview/mixkit-cat-meow-2-2068.mp3',
-        anjing: 'https://assets.mixkit.co/sfx/preview/mixkit-dog-barking-2-2065.mp3',
-        ayam: 'https://assets.mixkit.co/sfx/preview/mixkit-rooster-crowing-2-2067.mp3',
-        lembu: 'https://assets.mixkit.co/sfx/preview/mixkit-cow-moo-2-2066.mp3',
-        kambing: 'https://assets.mixkit.co/sfx/preview/mixkit-goat-bleat-2-2069.mp3',
-        
-        // ===== BUNYI MANUSIA =====
-        bayi: 'https://assets.mixkit.co/sfx/preview/mixkit-baby-crying-2-2070.mp3',
-        ketawa: 'https://assets.mixkit.co/sfx/preview/mixkit-laughing-2-2071.mp3',
-        bersin: 'https://assets.mixkit.co/sfx/preview/mixkit-sneeze-2-2072.mp3',
-        nyanyi: 'https://assets.mixkit.co/sfx/preview/mixkit-woman-singing-2-2073.mp3',
-        tepuk: 'https://assets.mixkit.co/sfx/preview/mixkit-clapping-2-2074.mp3',
-        
-        // ===== BUNYI KENDERAAN =====
-        kereta: 'https://assets.mixkit.co/sfx/preview/mixkit-car-ignition-2-2075.mp3',
-        motorsikal: 'https://assets.mixkit.co/sfx/preview/mixkit-motorcycle-2-2076.mp3',
-        bas: 'https://assets.mixkit.co/sfx/preview/mixkit-bus-horn-2-2077.mp3',
-        kapal: 'https://assets.mixkit.co/sfx/preview/mixkit-ship-horn-2-2078.mp3',
-        kapal_terbang: 'https://assets.mixkit.co/sfx/preview/mixkit-airplane-2-2079.mp3',
-        
-        // ===== BUNYI AKTIVITI =====
-        correct: 'https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3',
-        wrong: 'https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-buzz-2-2079.mp3',
-        click: 'https://assets.mixkit.co/sfx/preview/mixkit-game-click-1114.mp3',
-        complete: 'https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3',
-        select: 'https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3',
-        drag: 'https://assets.mixkit.co/sfx/preview/mixkit-drag-and-drop-2-2079.mp3'
+        // Bunyi haiwan
+        kucing: 'https://www.soundjay.com/animals/cat-meow-01.mp3',
+        anjing: 'https://www.soundjay.com/animals/dog-bark-01.mp3',
+        ayam: 'https://www.soundjay.com/animals/rooster-crowing-01.mp3',
+        lembu: 'https://www.soundjay.com/animals/cow-moo-01.mp3',
+        kambing: 'https://www.soundjay.com/animals/goat-01.mp3',
+        // Bunyi manusia
+        bayi: 'https://www.soundjay.com/human/baby-crying-01.mp3',
+        ketawa: 'https://www.soundjay.com/human/laugh-01.mp3',
+        bersin: 'https://www.soundjay.com/human/sneeze-01.mp3',
+        nyanyi: 'https://www.soundjay.com/human/woman-singing-01.mp3',
+        tepuk: 'https://www.soundjay.com/human/applause-01.mp3',
+        // Bunyi kenderaan
+        kereta: 'https://www.soundjay.com/transportation/car-horn-01.mp3',
+        motorsikal: 'https://www.soundjay.com/transportation/motorcycle-01.mp3',
+        bas: 'https://www.soundjay.com/transportation/bus-01.mp3',
+        kapal: 'https://www.soundjay.com/transportation/ship-horn-01.mp3',
+        kapal_terbang: 'https://www.soundjay.com/transportation/airplane-01.mp3',
+        // Bunyi aktiviti
+        correct: 'https://www.soundjay.com/button/button-09.mp3',
+        wrong: 'https://www.soundjay.com/button/button-10.mp3',
+        click: 'https://www.soundjay.com/button/button-01.mp3',
+        complete: 'https://www.soundjay.com/misc/bell-01.mp3'
     },
     
     init() {
-        // Preload semua audio
+        // Init Web Audio API sebagai fallback utama
+        try {
+            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+            console.warn('Web Audio tidak disokong');
+        }
+        
+        // Cuba muat MP3, tetapi tidak bergantung padanya
         Object.keys(this.urls).forEach(key => {
             try {
-                const audio = new Audio(this.urls[key]);
-                audio.preload = 'auto';
-                audio.volume = 0.7;
-                this.audioElements[key] = audio;
-            } catch (e) {
-                console.warn('Gagal memuatkan audio:', key);
-            }
+                const audio = new Audio();
+                audio.src = this.urls[key];
+                audio.preload = 'none';
+                audio.volume = 0.6;
+                audio.crossOrigin = 'anonymous';
+                // Hanya tanda sebagai boleh guna jika berjaya dimuat
+                audio.addEventListener('canplaythrough', () => {
+                    this.useMP3 = true;
+                }, { once: true });
+                audio.addEventListener('error', () => {
+                    // Gagal - kekal guna Web Audio
+                }, { once: true });
+                this.mp3Elements[key] = audio;
+            } catch (e) {}
         });
+    },
+    
+    resumeContext() {
+        if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
     },
     
     toggle() {
         this.enabled = !this.enabled;
-        // Pause semua audio jika dimatikan
         if (!this.enabled) {
-            Object.values(this.audioElements).forEach(audio => {
-                audio.pause();
-                audio.currentTime = 0;
+            Object.values(this.mp3Elements).forEach(a => {
+                try { a.pause(); a.currentTime = 0; } catch(e){}
             });
         }
         return this.enabled;
     },
     
+    // Main bunyi - cuba MP3, jika gagal guna Web Audio
     play(soundName) {
         if (!this.enabled) return;
-        const audio = this.audioElements[soundName];
-        if (audio) {
+        this.resumeContext();
+        
+        // Cuba MP3 dahulu
+        const mp3 = this.mp3Elements[soundName];
+        if (mp3 && this.useMP3) {
             try {
-                audio.currentTime = 0;
-                audio.play().catch(err => {
-                    // Browser mungkin block autoplay, tapi ini normal
-                    console.log('Audio play prevented:', err.message);
-                });
+                mp3.currentTime = 0;
+                const promise = mp3.play();
+                if (promise) {
+                    promise.catch(() => this.playWebAudio(soundName));
+                    return;
+                }
+                return;
             } catch (e) {}
+        }
+        
+        // Fallback ke Web Audio
+        this.playWebAudio(soundName);
+    },
+    
+    // ===== WEB AUDIO FALLBACK (PASTI BERBUNYI) =====
+    playWebAudio(soundName) {
+        if (!this.ctx) return;
+        const t = this.ctx.currentTime;
+        
+        const playTone = (freq, dur, type = 'sine', vol = 0.3, delay = 0) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+            const start = t + delay;
+            gain.gain.setValueAtTime(vol, start);
+            gain.gain.exponentialRampToValueAtTime(0.001, start + dur);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(start);
+            osc.stop(start + dur);
+        };
+        
+        switch(soundName) {
+            // ===== HAIWAN =====
+            case 'kucing':
+                playTone(800, 0.15, 'sine', 0.35, 0);
+                playTone(1000, 0.15, 'sine', 0.35, 0.15);
+                playTone(700, 0.3, 'sine', 0.35, 0.3);
+                break;
+            case 'anjing':
+                playTone(220, 0.12, 'sawtooth', 0.35, 0);
+                playTone(180, 0.15, 'sawtooth', 0.35, 0.12);
+                playTone(200, 0.12, 'sawtooth', 0.35, 0.3);
+                break;
+            case 'ayam':
+                playTone(1200, 0.08, 'square', 0.3, 0);
+                playTone(1400, 0.08, 'square', 0.3, 0.08);
+                playTone(1000, 0.1, 'square', 0.3, 0.16);
+                playTone(1600, 0.25, 'square', 0.3, 0.26);
+                break;
+            case 'lembu':
+                playTone(150, 0.5, 'sine', 0.4, 0);
+                playTone(120, 0.5, 'sine', 0.4, 0.5);
+                break;
+            case 'kambing':
+                playTone(600, 0.15, 'sawtooth', 0.3, 0);
+                playTone(500, 0.2, 'sawtooth', 0.3, 0.15);
+                playTone(550, 0.15, 'sawtooth', 0.3, 0.35);
+                break;
+            // ===== MANUSIA =====
+            case 'bayi':
+                playTone(500, 0.3, 'sine', 0.35, 0);
+                playTone(400, 0.3, 'sine', 0.35, 0.3);
+                playTone(450, 0.4, 'sine', 0.35, 0.6);
+                break;
+            case 'ketawa':
+                [523, 587, 659, 587, 523].forEach((f, i) => playTone(f, 0.1, 'sine', 0.35, i * 0.1));
+                break;
+            case 'bersin':
+                playTone(200, 0.1, 'square', 0.35, 0);
+                playTone(150, 0.35, 'square', 0.35, 0.1);
+                break;
+            case 'nyanyi':
+                [523, 587, 659, 698, 783, 880].forEach((f, i) => playTone(f, 0.18, 'sine', 0.35, i * 0.18));
+                break;
+            case 'tepuk':
+                for (let i = 0; i < 5; i++) playTone(100, 0.05, 'square', 0.5, i * 0.15);
+                break;
+            // ===== KENDERAAN =====
+            case 'kereta':
+                playTone(200, 0.4, 'sawtooth', 0.3, 0);
+                playTone(250, 0.4, 'sawtooth', 0.3, 0.4);
+                break;
+            case 'motorsikal':
+                playTone(150, 0.3, 'sawtooth', 0.35, 0);
+                playTone(180, 0.3, 'sawtooth', 0.35, 0.3);
+                playTone(200, 0.3, 'sawtooth', 0.35, 0.6);
+                break;
+            case 'bas':
+                playTone(250, 0.5, 'square', 0.35, 0);
+                playTone(300, 0.5, 'square', 0.35, 0.5);
+                break;
+            case 'kapal':
+                playTone(120, 0.9, 'sine', 0.4, 0);
+                playTone(100, 0.9, 'sine', 0.4, 0.9);
+                break;
+            case 'kapal_terbang':
+                playTone(400, 0.2, 'sawtooth', 0.25, 0);
+                playTone(500, 0.2, 'sawtooth', 0.25, 0.2);
+                playTone(600, 0.2, 'sawtooth', 0.25, 0.4);
+                playTone(700, 0.3, 'sawtooth', 0.25, 0.6);
+                break;
+            // ===== AKTIVITI =====
+            case 'correct':
+                playTone(523.25, 0.12, 'sine', 0.4, 0);
+                playTone(659.25, 0.12, 'sine', 0.4, 0.12);
+                playTone(783.99, 0.25, 'sine', 0.45, 0.24);
+                break;
+            case 'wrong':
+                playTone(220, 0.18, 'sawtooth', 0.3, 0);
+                playTone(174.61, 0.3, 'sawtooth', 0.3, 0.18);
+                break;
+            case 'click':
+                playTone(880, 0.06, 'square', 0.2, 0);
+                break;
+            case 'complete':
+                [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => playTone(f, 0.18, 'sine', 0.4, i * 0.12));
+                playTone(1318.51, 0.5, 'sine', 0.45, 0.5);
+                break;
+            default:
+                playTone(440, 0.15, 'sine', 0.3, 0);
         }
     }
 };
@@ -159,18 +296,18 @@ const soundToggle = document.getElementById('sound-toggle');
 
 // ===================== INIT =====================
 function init() {
-    // Init audio
     SoundSystem.init();
     
     // Aktifkan audio pada interaksi pertama
-    document.body.addEventListener('click', () => {
-        // Browser memerlukan interaksi pengguna untuk main audio
-        if (SoundSystem.audioElements.correct) {
-            SoundSystem.play('click');
-        }
-    }, { once: true });
+    const unlockAudio = () => {
+        SoundSystem.resumeContext();
+        SoundSystem.play('click');
+        document.removeEventListener('click', unlockAudio);
+        document.removeEventListener('touchstart', unlockAudio);
+    };
+    document.addEventListener('click', unlockAudio);
+    document.addEventListener('touchstart', unlockAudio);
 
-    // Butang bunyi
     soundToggle.addEventListener('click', (e) => {
         e.stopPropagation();
         const enabled = SoundSystem.toggle();
@@ -179,7 +316,6 @@ function init() {
         if (enabled) SoundSystem.play('click');
     });
 
-    // Pilih level
     document.querySelectorAll('.level-card').forEach(card => {
         card.addEventListener('click', () => {
             SoundSystem.play('click');
@@ -194,7 +330,6 @@ function init() {
         });
     });
 
-    // Kembali ke pilih level
     backBtn.addEventListener('click', () => {
         SoundSystem.play('click');
         activityScreen.classList.remove('active');
@@ -202,7 +337,6 @@ function init() {
         feedbackEl.textContent = '';
     });
 
-    // Tab aktiviti
     tabButtons.forEach((btn, idx) => {
         btn.addEventListener('click', () => {
             SoundSystem.play('click');
@@ -254,8 +388,8 @@ function renderMengecam(levelData, allItems) {
     }
 
     let html = `<div class="activity-title">🔊 Dengar dan pilih gambar yang betul</div>`;
-    html += `<div style="font-size:2rem; margin:10px 0; cursor:pointer;" id="play-sound-btn">🔊 "${item.sound}" <i class="fas fa-play-circle" style="color:#b35100;"></i></div>`;
-    html += `<div style="font-size:1.2rem; color:#7a4a1b;">Bunyi apa ini? (Klik bunyi untuk dengar)</div>`;
+    html += `<div style="font-size:2rem; margin:10px 0; cursor:pointer; background:#ffe6b3; padding:10px 20px; border-radius:30px; box-shadow: 0 4px 0 #b16f2a;" id="play-sound-btn">🔊 "${item.sound}" <i class="fas fa-play-circle" style="color:#b35100;"></i></div>`;
+    html += `<div style="font-size:1.2rem; color:#7a4a1b;">Bunyi apa ini? (Klik untuk dengar semula)</div>`;
     html += `<div class="options-grid">`;
     options.forEach(opt => {
         html += `<div class="option-card" data-id="${opt.id}" data-correct="${opt.id === item.id}">
@@ -269,8 +403,7 @@ function renderMengecam(levelData, allItems) {
         SoundSystem.play(item.id);
     });
 
-    // Auto-main bunyi selepas render
-    setTimeout(() => SoundSystem.play(item.id), 400);
+    setTimeout(() => SoundSystem.play(item.id), 500);
 
     document.querySelectorAll('.option-card').forEach(card => {
         card.addEventListener('click', function() {
@@ -518,7 +651,7 @@ function renderBetulSalah(levelData, allItems) {
     const shownName = isCorrect ? item.name : (other ? other.name : 'Anjing');
 
     let html = `<div class="activity-title">✅ Betul atau Salah?</div>`;
-    html += `<div style="font-size:2rem; margin:15px 0; cursor:pointer;" id="play-sound-btn2">🔊 Bunyi: "${item.sound}" <i class="fas fa-play-circle" style="color:#b35100;"></i></div>`;
+    html += `<div style="font-size:2rem; margin:15px 0; cursor:pointer; background:#ffe6b3; padding:10px 20px; border-radius:30px; box-shadow: 0 4px 0 #b16f2a;" id="play-sound-btn2">🔊 Bunyi: "${item.sound}" <i class="fas fa-play-circle" style="color:#b35100;"></i></div>`;
     html += `<div style="font-size:5rem; animation: bounceSlow 2s infinite;">${shownEmoji}</div>`;
     html += `<div style="font-size:1.5rem; margin:10px 0;">${shownName}</div>`;
     html += `<div style="display:flex; gap:30px; margin-top:20px; flex-wrap:wrap; justify-content:center;">`;
@@ -530,7 +663,7 @@ function renderBetulSalah(levelData, allItems) {
     document.getElementById('play-sound-btn2').addEventListener('click', () => {
         SoundSystem.play(item.id);
     });
-    setTimeout(() => SoundSystem.play(item.id), 400);
+    setTimeout(() => SoundSystem.play(item.id), 500);
 
     document.getElementById('btn-betul').addEventListener('click', () => checkBetulSalah(true, isCorrect));
     document.getElementById('btn-salah').addEventListener('click', () => checkBetulSalah(false, isCorrect));
@@ -607,7 +740,7 @@ function renderPuzzle(levelData, allItems) {
     const shuffled = shuffleArray([...pieces]);
 
     let html = `<div class="activity-title">🧩 Susun puzzle: ${item.name}</div>`;
-    html += `<div style="font-size:1.2rem; margin-bottom:10px; cursor:pointer;" id="play-sound-btn3">🔊 Dengar bunyi: "${item.sound}" <i class="fas fa-play-circle" style="color:#b35100;"></i></div>`;
+    html += `<div style="font-size:1.2rem; margin-bottom:10px; cursor:pointer; background:#ffe6b3; padding:8px 18px; border-radius:30px; box-shadow: 0 4px 0 #b16f2a;" id="play-sound-btn3">🔊 Dengar bunyi: "${item.sound}" <i class="fas fa-play-circle" style="color:#b35100;"></i></div>`;
     html += `<div class="puzzle-grid" id="puzzle-grid">`;
     shuffled.forEach((p, idx) => {
         html += `<div class="puzzle-piece" data-idx="${idx}" data-emoji="${p}" style="animation-delay: ${idx * 0.1}s;">${p}</div>`;
@@ -619,7 +752,7 @@ function renderPuzzle(levelData, allItems) {
     document.getElementById('play-sound-btn3').addEventListener('click', () => {
         SoundSystem.play(item.id);
     });
-    setTimeout(() => SoundSystem.play(item.id), 400);
+    setTimeout(() => SoundSystem.play(item.id), 500);
 
     let selectedPiece = null;
     document.querySelectorAll('.puzzle-piece').forEach(piece => {
