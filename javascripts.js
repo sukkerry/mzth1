@@ -1,4 +1,151 @@
-/* javascripts.js — 3 Level × 7 Aktiviti Interaktif */
+/* javascripts.js — 3 Level × 7 Aktiviti Interaktif + Bunyi Menarik */
+
+// ===================== SISTEM BUNYI (WEB AUDIO API) =====================
+const SoundSystem = {
+    ctx: null,
+    enabled: true,
+    init() {
+        if (!this.ctx) {
+            try {
+                this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) { console.warn('Web Audio tidak disokong'); }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
+    },
+    toggle() {
+        this.enabled = !this.enabled;
+        return this.enabled;
+    },
+    // Bunyi asas
+    playTone(freq, duration = 0.15, type = 'sine', volume = 0.3, delay = 0) {
+        if (!this.enabled || !this.ctx) return;
+        try {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+            const startTime = this.ctx.currentTime + delay;
+            gain.gain.setValueAtTime(volume, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+        } catch (e) {}
+    },
+    // Bunyi betul — melodi ceria
+    correct() {
+        if (!this.enabled) return;
+        this.playTone(523.25, 0.12, 'sine', 0.35, 0);
+        this.playTone(659.25, 0.12, 'sine', 0.35, 0.12);
+        this.playTone(783.99, 0.2, 'sine', 0.4, 0.24);
+    },
+    // Bunyi salah — nada rendah
+    wrong() {
+        if (!this.enabled) return;
+        this.playTone(220, 0.15, 'sawtooth', 0.25, 0);
+        this.playTone(174.61, 0.25, 'sawtooth', 0.25, 0.15);
+    },
+    // Bunyi klik
+    click() {
+        this.playTone(880, 0.05, 'square', 0.15);
+    },
+    // Bunyi selesai — fanfare
+    complete() {
+        if (!this.enabled) return;
+        const notes = [523.25, 659.25, 783.99, 1046.5];
+        notes.forEach((f, i) => this.playTone(f, 0.18, 'sine', 0.4, i * 0.12));
+        this.playTone(1318.51, 0.4, 'sine', 0.45, 0.5);
+    },
+    // Bunyi haiwan/manusia/kenderaan (simulasi)
+    playSoundEffect(id) {
+        if (!this.enabled) return;
+        const effects = {
+            // Haiwan
+            kucing:   () => this._meow(),
+            anjing:   () => this._woof(),
+            ayam:     () => this._chicken(),
+            lembu:    () => this._moo(),
+            kambing:  () => this._goat(),
+            // Manusia
+            bayi:     () => this._baby(),
+            ketawa:   () => this._laugh(),
+            bersin:   () => this._sneeze(),
+            nyanyi:   () => this._sing(),
+            tepuk:    () => this._clap(),
+            // Kenderaan
+            kereta:   () => this._car(),
+            motorsikal: () => this._motor(),
+            bas:      () => this._bus(),
+            kapal:    () => this._ship(),
+            kapal_terbang: () => this._plane()
+        };
+        if (effects[id]) effects[id]();
+    },
+    _meow() {
+        this.playTone(800, 0.15, 'sine', 0.3, 0);
+        this.playTone(1000, 0.15, 'sine', 0.3, 0.15);
+        this.playTone(700, 0.25, 'sine', 0.3, 0.3);
+    },
+    _woof() {
+        this.playTone(200, 0.12, 'sawtooth', 0.3, 0);
+        this.playTone(180, 0.15, 'sawtooth', 0.3, 0.12);
+    },
+    _chicken() {
+        this.playTone(1200, 0.08, 'square', 0.25, 0);
+        this.playTone(1400, 0.08, 'square', 0.25, 0.08);
+        this.playTone(1000, 0.1, 'square', 0.25, 0.16);
+        this.playTone(1600, 0.2, 'square', 0.25, 0.26);
+    },
+    _moo() {
+        this.playTone(150, 0.4, 'sine', 0.3, 0);
+        this.playTone(120, 0.4, 'sine', 0.3, 0.4);
+    },
+    _goat() {
+        this.playTone(600, 0.15, 'sawtooth', 0.25, 0);
+        this.playTone(500, 0.2, 'sawtooth', 0.25, 0.15);
+    },
+    _baby() {
+        this.playTone(500, 0.3, 'sine', 0.3, 0);
+        this.playTone(400, 0.3, 'sine', 0.3, 0.3);
+    },
+    _laugh() {
+        [523, 587, 659, 587, 523].forEach((f, i) => this.playTone(f, 0.1, 'sine', 0.3, i * 0.1));
+    },
+    _sneeze() {
+        this.playTone(200, 0.1, 'square', 0.3, 0);
+        this.playTone(150, 0.3, 'square', 0.3, 0.1);
+    },
+    _sing() {
+        [523, 587, 659, 698, 783].forEach((f, i) => this.playTone(f, 0.15, 'sine', 0.3, i * 0.15));
+    },
+    _clap() {
+        for (let i = 0; i < 3; i++) this.playTone(100, 0.05, 'square', 0.4, i * 0.12);
+    },
+    _car() {
+        this.playTone(200, 0.5, 'sawtooth', 0.2, 0);
+        this.playTone(250, 0.5, 'sawtooth', 0.2, 0.5);
+    },
+    _motor() {
+        this.playTone(150, 0.4, 'sawtooth', 0.25, 0);
+        this.playTone(180, 0.4, 'sawtooth', 0.25, 0.4);
+    },
+    _bus() {
+        this.playTone(250, 0.5, 'square', 0.3, 0);
+        this.playTone(300, 0.5, 'square', 0.3, 0.5);
+    },
+    _ship() {
+        this.playTone(120, 0.8, 'sine', 0.35, 0);
+        this.playTone(100, 0.8, 'sine', 0.35, 0.8);
+    },
+    _plane() {
+        this.playTone(400, 0.2, 'sawtooth', 0.2, 0);
+        this.playTone(500, 0.2, 'sawtooth', 0.2, 0.2);
+        this.playTone(600, 0.2, 'sawtooth', 0.2, 0.4);
+    }
+};
 
 // ===================== DATA BUNYI =====================
 const SOUND_DATA = {
@@ -67,7 +214,6 @@ const SOUND_DATA = {
 // ===================== STATE =====================
 let currentLevel = 'mudah';
 let currentActivity = 0;
-let activityState = {};
 
 // ===================== DOM =====================
 const levelSelection = document.getElementById('level-selection');
@@ -78,12 +224,29 @@ const activityContent = document.getElementById('activity-content');
 const feedbackEl = document.getElementById('feedback');
 const tabButtons = document.querySelectorAll('.tab-btn');
 const backBtn = document.getElementById('back-to-level');
+const soundToggle = document.getElementById('sound-toggle');
 
 // ===================== INIT =====================
 function init() {
+    // Aktifkan audio pada interaksi pertama
+    document.body.addEventListener('click', () => SoundSystem.init(), { once: true });
+    document.body.addEventListener('touchstart', () => SoundSystem.init(), { once: true });
+
+    // Butang bunyi
+    soundToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        SoundSystem.init();
+        const enabled = SoundSystem.toggle();
+        soundToggle.classList.toggle('muted', !enabled);
+        soundToggle.innerHTML = enabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-mute"></i>';
+        if (enabled) SoundSystem.click();
+    });
+
     // Pilih level
     document.querySelectorAll('.level-card').forEach(card => {
         card.addEventListener('click', () => {
+            SoundSystem.init();
+            SoundSystem.click();
             currentLevel = card.dataset.level;
             levelSelection.classList.remove('active');
             activityScreen.classList.add('active');
@@ -97,6 +260,7 @@ function init() {
 
     // Kembali ke pilih level
     backBtn.addEventListener('click', () => {
+        SoundSystem.click();
         activityScreen.classList.remove('active');
         levelSelection.classList.add('active');
         feedbackEl.textContent = '';
@@ -105,6 +269,7 @@ function init() {
     // Tab aktiviti
     tabButtons.forEach((btn, idx) => {
         btn.addEventListener('click', () => {
+            SoundSystem.click();
             currentActivity = idx;
             updateTabs();
             renderActivity();
@@ -153,8 +318,8 @@ function renderMengecam(levelData, allItems) {
     }
 
     let html = `<div class="activity-title">🔊 Dengar dan pilih gambar yang betul</div>`;
-    html += `<div style="font-size:2.5rem; margin:10px 0;">🔊 "${item.sound}"</div>`;
-    html += `<div style="font-size:1.2rem; color:#7a4a1b;">Bunyi apa ini?</div>`;
+    html += `<div style="font-size:2rem; margin:10px 0; cursor:pointer;" id="play-sound-btn">🔊 "${item.sound}" <i class="fas fa-play-circle" style="color:#b35100;"></i></div>`;
+    html += `<div style="font-size:1.2rem; color:#7a4a1b;">Bunyi apa ini? (Klik bunyi untuk dengar)</div>`;
     html += `<div class="options-grid">`;
     options.forEach(opt => {
         html += `<div class="option-card" data-id="${opt.id}" data-correct="${opt.id === item.id}">
@@ -164,16 +329,26 @@ function renderMengecam(levelData, allItems) {
     html += `</div>`;
     activityContent.innerHTML = html;
 
+    // Mainkan bunyi apabila klik pada teks bunyi
+    document.getElementById('play-sound-btn').addEventListener('click', () => {
+        SoundSystem.playSoundEffect(item.id);
+    });
+
+    // Auto-main bunyi selepas render
+    setTimeout(() => SoundSystem.playSoundEffect(item.id), 400);
+
     document.querySelectorAll('.option-card').forEach(card => {
         card.addEventListener('click', function() {
             const isCorrect = this.dataset.correct === 'true';
             if (isCorrect) {
+                SoundSystem.correct();
                 this.classList.add('correct-highlight');
                 feedbackEl.textContent = '✅ Betul! Hebat!';
                 feedbackEl.style.color = '#2e7d32';
                 document.querySelectorAll('.option-card').forEach(c => c.style.pointerEvents = 'none');
                 setTimeout(() => renderActivity(), 1500);
             } else {
+                SoundSystem.wrong();
                 this.classList.add('wrong-highlight');
                 feedbackEl.textContent = '❌ Cuba lagi!';
                 feedbackEl.style.color = '#c62828';
@@ -193,7 +368,7 @@ function renderPadanan(levelData, allItems) {
     html += `<div style="display:flex; flex-wrap:wrap; gap:30px; justify-content:center; align-items:center;">`;
     html += `<div style="display:flex; flex-direction:column; gap:12px;">`;
     leftItems.forEach(item => {
-        html += `<div class="match-card" data-id="${item.id}" data-type="sound" style="font-size:1.2rem; padding:10px 18px; width:auto; min-width:130px; height:auto; background:#c5e0ff;">
+        html += `<div class="match-card" data-id="${item.id}" data-type="sound" style="font-size:1.2rem; padding:10px 18px; width:auto; min-width:130px; height:auto; background:#c5e0ff; cursor:pointer;">
             🔊 ${item.sound}
         </div>`;
     });
@@ -213,6 +388,7 @@ function renderPadanan(levelData, allItems) {
     document.querySelectorAll('.match-card[data-type="sound"]').forEach(card => {
         card.addEventListener('click', function() {
             if (this.classList.contains('matched')) return;
+            SoundSystem.playSoundEffect(this.dataset.id);
             document.querySelectorAll('.match-card[data-type="sound"]').forEach(c => c.classList.remove('selected'));
             this.classList.add('selected');
             selectedSound = this;
@@ -223,6 +399,7 @@ function renderPadanan(levelData, allItems) {
         card.addEventListener('click', function() {
             if (!selectedSound || this.classList.contains('matched')) return;
             if (selectedSound.dataset.id === this.dataset.id) {
+                SoundSystem.correct();
                 selectedSound.classList.add('correct-highlight');
                 this.classList.add('correct-highlight');
                 selectedSound.classList.remove('selected');
@@ -236,11 +413,13 @@ function renderPadanan(levelData, allItems) {
                 selectedSound = null;
                 if (matchedCount === 3) {
                     setTimeout(() => {
+                        SoundSystem.complete();
                         feedbackEl.textContent = '🎉 Semua padanan betul!';
-                        setTimeout(() => renderActivity(), 1200);
+                        setTimeout(() => renderActivity(), 1500);
                     }, 300);
                 }
             } else {
+                SoundSystem.wrong();
                 this.classList.add('wrong-highlight');
                 feedbackEl.textContent = '❌ Cuba lagi!';
                 feedbackEl.style.color = '#c62828';
@@ -263,7 +442,7 @@ function renderDragDrop(levelData, allItems) {
     html += `</div>`;
     html += `<div style="margin-top:25px; display:flex; flex-wrap:wrap; gap:15px; justify-content:center;">`;
     shuffleArray(items).forEach(item => {
-        html += `<div class="drag-item" draggable="true" data-id="${item.id}" style="font-size:1.2rem; width:auto; padding:12px 20px; height:auto;">
+        html += `<div class="drag-item" draggable="true" data-id="${item.id}" style="font-size:1.2rem; width:auto; padding:12px 20px; height:auto; cursor:grab;">
             🔊 ${item.sound}
         </div>`;
     });
@@ -273,6 +452,7 @@ function renderDragDrop(levelData, allItems) {
     document.querySelectorAll('.drag-item').forEach(item => {
         item.addEventListener('dragstart', (e) => {
             e.dataTransfer.setData('text/plain', item.dataset.id);
+            SoundSystem.playSoundEffect(item.dataset.id);
         });
     });
 
@@ -290,6 +470,7 @@ function renderDragDrop(levelData, allItems) {
             const id = e.dataTransfer.getData('text/plain');
             const dropId = zone.dataset.id;
             if (id === dropId) {
+                SoundSystem.correct();
                 zone.style.background = '#b9f6ca';
                 zone.style.borderColor = '#2e7d32';
                 zone.innerHTML = `✅ ${zone.innerHTML}`;
@@ -298,11 +479,13 @@ function renderDragDrop(levelData, allItems) {
                 feedbackEl.style.color = '#2e7d32';
                 if (document.querySelectorAll('.drag-item').length === 0) {
                     setTimeout(() => {
+                        SoundSystem.complete();
                         feedbackEl.textContent = '🎉 Hebat! Semua betul!';
-                        setTimeout(() => renderActivity(), 1200);
+                        setTimeout(() => renderActivity(), 1500);
                     }, 300);
                 }
             } else {
+                SoundSystem.wrong();
                 feedbackEl.textContent = '❌ Cuba lagi!';
                 feedbackEl.style.color = '#c62828';
             }
@@ -337,9 +520,16 @@ function renderMemori(levelData, allItems) {
     document.querySelectorAll('.memory-card').forEach(card => {
         card.addEventListener('click', function() {
             if (lock || this.classList.contains('flipped') || this.classList.contains('matched')) return;
+            SoundSystem.click();
             const face = this.dataset.face;
             this.textContent = face;
             this.classList.add('flipped');
+
+            // Main bunyi haiwan jika kad jenis sound
+            if (this.dataset.type === 'sound') {
+                SoundSystem.playSoundEffect(this.dataset.id);
+            }
+
             flipped.push({ el: this, id: this.dataset.id, type: this.dataset.type });
 
             if (flipped.length === 2) {
@@ -347,6 +537,7 @@ function renderMemori(levelData, allItems) {
                 const [a, b] = flipped;
                 if (a.id === b.id && a.type !== b.type) {
                     setTimeout(() => {
+                        SoundSystem.correct();
                         a.el.classList.add('matched');
                         b.el.classList.add('matched');
                         a.el.classList.remove('flipped');
@@ -359,12 +550,16 @@ function renderMemori(levelData, allItems) {
                         flipped = [];
                         lock = false;
                         if (matchedPairs === 4) {
-                            feedbackEl.textContent = '🎉 Semua padanan betul!';
-                            setTimeout(() => renderActivity(), 1500);
+                            setTimeout(() => {
+                                SoundSystem.complete();
+                                feedbackEl.textContent = '🎉 Semua padanan betul!';
+                                setTimeout(() => renderActivity(), 1500);
+                            }, 300);
                         }
                     }, 400);
                 } else {
                     setTimeout(() => {
+                        SoundSystem.wrong();
                         a.el.textContent = '❓';
                         b.el.textContent = '❓';
                         a.el.classList.remove('flipped');
@@ -384,18 +579,24 @@ function renderMemori(levelData, allItems) {
 function renderBetulSalah(levelData, allItems) {
     const item = allItems[Math.floor(Math.random() * allItems.length)];
     const isCorrect = Math.random() > 0.5;
-    const shownEmoji = isCorrect ? item.emoji : allItems.find(i => i.id !== item.id)?.emoji || '🐶';
-    const shownName = isCorrect ? item.name : allItems.find(i => i.id !== item.id)?.name || 'Anjing';
+    const other = allItems.find(i => i.id !== item.id);
+    const shownEmoji = isCorrect ? item.emoji : (other ? other.emoji : '🐶');
+    const shownName = isCorrect ? item.name : (other ? other.name : 'Anjing');
 
     let html = `<div class="activity-title">✅ Betul atau Salah?</div>`;
-    html += `<div style="font-size:2rem; margin:15px 0;">🔊 Bunyi: "${item.sound}"</div>`;
+    html += `<div style="font-size:2rem; margin:15px 0; cursor:pointer;" id="play-sound-btn2">🔊 Bunyi: "${item.sound}" <i class="fas fa-play-circle" style="color:#b35100;"></i></div>`;
     html += `<div style="font-size:5rem;">${shownEmoji}</div>`;
     html += `<div style="font-size:1.5rem; margin:10px 0;">${shownName}</div>`;
-    html += `<div style="display:flex; gap:30px; margin-top:20px;">`;
+    html += `<div style="display:flex; gap:30px; margin-top:20px; flex-wrap:wrap; justify-content:center;">`;
     html += `<button class="option-card" id="btn-betul" style="font-size:1.8rem; width:auto; padding:15px 40px; background:#b9f6ca; color:#1b5e20;">BETUL</button>`;
     html += `<button class="option-card" id="btn-salah" style="font-size:1.8rem; width:auto; padding:15px 40px; background:#ffcdd2; color:#b71c1c;">SALAH</button>`;
     html += `</div>`;
     activityContent.innerHTML = html;
+
+    document.getElementById('play-sound-btn2').addEventListener('click', () => {
+        SoundSystem.playSoundEffect(item.id);
+    });
+    setTimeout(() => SoundSystem.playSoundEffect(item.id), 400);
 
     document.getElementById('btn-betul').addEventListener('click', () => checkBetulSalah(true, isCorrect));
     document.getElementById('btn-salah').addEventListener('click', () => checkBetulSalah(false, isCorrect));
@@ -403,11 +604,13 @@ function renderBetulSalah(levelData, allItems) {
 
 function checkBetulSalah(userSaysBetul, correctAnswer) {
     if (userSaysBetul === correctAnswer) {
+        SoundSystem.correct();
         feedbackEl.textContent = '✅ Betul! Hebat!';
         feedbackEl.style.color = '#2e7d32';
         document.querySelectorAll('.option-card').forEach(b => b.style.pointerEvents = 'none');
         setTimeout(() => renderActivity(), 1500);
     } else {
+        SoundSystem.wrong();
         feedbackEl.textContent = '❌ Cuba lagi!';
         feedbackEl.style.color = '#c62828';
     }
@@ -436,6 +639,7 @@ function renderSusunUrutan(levelData, allItems) {
     let selectedOrder = [];
     document.querySelectorAll('.sortable').forEach(card => {
         card.addEventListener('click', function() {
+            SoundSystem.playSoundEffect(this.dataset.id);
             if (this.classList.contains('selected')) return;
             this.classList.add('selected');
             selectedOrder.push(this.dataset.id);
@@ -448,10 +652,12 @@ function renderSusunUrutan(levelData, allItems) {
     document.getElementById('check-order').addEventListener('click', () => {
         const correctIds = items.map(i => i.id);
         if (JSON.stringify(selectedOrder) === JSON.stringify(correctIds)) {
+            SoundSystem.correct();
             feedbackEl.textContent = '✅ Urutan betul!';
             feedbackEl.style.color = '#2e7d32';
             setTimeout(() => renderActivity(), 1500);
         } else {
+            SoundSystem.wrong();
             feedbackEl.textContent = '❌ Cuba lagi!';
             feedbackEl.style.color = '#c62828';
             document.querySelectorAll('.sortable').forEach(c => c.classList.remove('selected'));
@@ -467,6 +673,7 @@ function renderPuzzle(levelData, allItems) {
     const shuffled = shuffleArray([...pieces]);
 
     let html = `<div class="activity-title">🧩 Susun puzzle: ${item.name}</div>`;
+    html += `<div style="font-size:1.2rem; margin-bottom:10px; cursor:pointer;" id="play-sound-btn3">🔊 Dengar bunyi: "${item.sound}" <i class="fas fa-play-circle" style="color:#b35100;"></i></div>`;
     html += `<div class="puzzle-grid" id="puzzle-grid">`;
     shuffled.forEach((p, idx) => {
         html += `<div class="puzzle-piece" data-idx="${idx}" data-emoji="${p}">${p}</div>`;
@@ -475,9 +682,15 @@ function renderPuzzle(levelData, allItems) {
     html += `<p style="margin-top:15px; color:#7a4a1b;">Klik dua keping untuk tukar tempat</p>`;
     activityContent.innerHTML = html;
 
+    document.getElementById('play-sound-btn3').addEventListener('click', () => {
+        SoundSystem.playSoundEffect(item.id);
+    });
+    setTimeout(() => SoundSystem.playSoundEffect(item.id), 400);
+
     let selectedPiece = null;
     document.querySelectorAll('.puzzle-piece').forEach(piece => {
         piece.addEventListener('click', function() {
+            SoundSystem.click();
             if (!selectedPiece) {
                 selectedPiece = this;
                 this.classList.add('selected');
@@ -489,6 +702,7 @@ function renderPuzzle(levelData, allItems) {
                 selectedPiece = null;
                 const allPieces = [...document.querySelectorAll('.puzzle-piece')];
                 if (allPieces.every(p => p.textContent === item.emoji)) {
+                    SoundSystem.complete();
                     feedbackEl.textContent = '🎉 Puzzle selesai!';
                     feedbackEl.style.color = '#2e7d32';
                     setTimeout(() => renderActivity(), 1500);
