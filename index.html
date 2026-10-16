@@ -1,91 +1,71 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>Mengecam Bunyi • Pendidikan Khas Tahun 1</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dengar &amp; Kenal Bunyi – Pendidikan Muzik Tahun 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Latar belakang beranimasi -->
-    <div class="animated-bg">
-        <div class="floating-emoji" style="--delay:0s; --duration:15s; --left:5%;">🎵</div>
-        <div class="floating-emoji" style="--delay:2s; --duration:18s; --left:15%;">🎶</div>
-        <div class="floating-emoji" style="--delay:4s; --duration:20s; --left:25%;">🎼</div>
-        <div class="floating-emoji" style="--delay:1s; --duration:16s; --left:35%;">🎤</div>
-        <div class="floating-emoji" style="--delay:3s; --duration:22s; --left:45%;">🥁</div>
-        <div class="floating-emoji" style="--delay:5s; --duration:19s; --left:55%;">🎹</div>
-        <div class="floating-emoji" style="--delay:0.5s; --duration:17s; --left:65%;">🎷</div>
-        <div class="floating-emoji" style="--delay:2.5s; --duration:21s; --left:75%;">🎺</div>
-        <div class="floating-emoji" style="--delay:4.5s; --duration:14s; --left:85%;">🎸</div>
-        <div class="floating-emoji" style="--delay:1.5s; --duration:23s; --left:95%;">🎻</div>
+<div id="floaters" aria-hidden="true"></div>
+<div id="app">
+
+  <!-- Skrin 1: Pilih level -->
+  <section class="screen active" id="s-level">
+    <div class="hero">
+      <div class="mascot">🦉</div>
+      <h1>Dengar &amp; Kenal Bunyi!</h1>
+      <p>Pilih tahap kamu untuk mula bermain</p>
     </div>
-
-    <div id="app">
-        <!-- Header DSKP -->
-        <header class="app-header">
-            <div class="dskp-info">
-                <h1><i class="fas fa-music bouncing"></i> Pendidikan Muzik Tahun 1</h1>
-                <p class="dskp-detail"><strong>Standard Kandungan 3.1.2:</strong> Mengecam bunyi yang didengar — haiwan, manusia, kenderaan</p>
-                <p class="dskp-sub">Program Pendidikan Khas Integrasi (Pembelajaran) • KSSRPK KS</p>
-            </div>
-            <button id="sound-toggle" class="sound-toggle" title="Hidup/Mati bunyi">
-                <i class="fas fa-volume-up"></i>
-            </button>
-        </header>
-
-        <!-- SKRIN 1: PILIH LEVEL -->
-        <section id="level-selection" class="screen active">
-            <h2 class="section-title pop-in"><i class="fas fa-star spinning"></i> Pilih Tahap Kesukaran <i class="fas fa-star spinning"></i></h2>
-            <div class="level-container">
-                <div class="level-card float-anim" data-level="mudah" style="--float-delay:0s;">
-                    <div class="level-icon bounce-slow">🐣</div>
-                    <h3>MUDAH</h3>
-                    <p>3 bunyi asas setiap kategori</p>
-                    <button class="btn-pilih">Pilih</button>
-                </div>
-                <div class="level-card float-anim" data-level="sederhana" style="--float-delay:0.5s;">
-                    <div class="level-icon bounce-slow">🦊</div>
-                    <h3>SEDERHANA</h3>
-                    <p>4 bunyi setiap kategori</p>
-                    <button class="btn-pilih">Pilih</button>
-                </div>
-                <div class="level-card float-anim" data-level="mencabar" style="--float-delay:1s;">
-                    <div class="level-icon bounce-slow">🦁</div>
-                    <h3>MENCABAR</h3>
-                    <p>5 bunyi setiap kategori</p>
-                    <button class="btn-pilih">Pilih</button>
-                </div>
-            </div>
-            <p class="hint pulse-text">✨ Klik pada kad untuk mula belajar! ✨</p>
-        </section>
-
-        <!-- SKRIN 2: AKTIVITI -->
-        <section id="activity-screen" class="screen">
-            <div class="activity-header slide-in-top">
-                <button id="back-to-level" class="btn-back"><i class="fas fa-arrow-left"></i> Tahap</button>
-                <h2 id="current-level-title">MUDAH</h2>
-                <div class="activity-progress" id="activity-progress">Aktiviti 1/7</div>
-            </div>
-
-            <div class="activity-tabs" id="activity-tabs">
-                <button class="tab-btn active" data-activity="0">1. Mengecam</button>
-                <button class="tab-btn" data-activity="1">2. Padanan</button>
-                <button class="tab-btn" data-activity="2">3. Drag & Drop</button>
-                <button class="tab-btn" data-activity="3">4. Memori</button>
-                <button class="tab-btn" data-activity="4">5. Betul/Salah</button>
-                <button class="tab-btn" data-activity="5">6. Susun Urutan</button>
-                <button class="tab-btn" data-activity="6">7. Puzzle</button>
-            </div>
-
-            <div id="activity-content" class="activity-content"></div>
-
-            <div id="feedback" class="feedback"></div>
-        </section>
+    <div class="grid levels">
+      <button class="big lv-mudah" data-level="mudah"><span class="ic">🌱</span>Mudah<small>3 pilihan • ada petunjuk</small></button>
+      <button class="big lv-sederhana" data-level="sederhana"><span class="ic">🌟</span>Sederhana<small>4 pilihan • petunjuk sedikit</small></button>
+      <button class="big lv-mencabar" data-level="mencabar"><span class="ic">🚀</span>Mencabar<small>6 pilihan • tanpa petunjuk</small></button>
     </div>
+    <div class="center"><button class="btn info" id="btnInfo">📘 Maklumat DSKP</button></div>
+  </section>
 
-    <script src="javascripts.js"></script>
+  <!-- Skrin 2: Menu aktiviti -->
+  <section class="screen" id="s-menu">
+    <div class="bar">
+      <button class="btn alt" id="menuBack">⬅ Tukar Tahap</button>
+      <span class="pill" id="lvLabel"></span>
+      <button class="btn info" id="btnInfo2">📘 Maklumat</button>
+    </div>
+    <div class="hero"><h1 style="font-size:clamp(1.6rem,5vw,2.6rem)">Pilih Aktiviti</h1></div>
+    <div class="grid acts" id="actGrid"></div>
+  </section>
+
+  <!-- Skrin 3: Aktiviti -->
+  <section class="screen" id="s-act">
+    <div class="bar">
+      <button class="btn alt" id="actBack">⬅ Menu</button>
+      <span class="pill" id="actTitle"></span>
+      <span class="pill" id="actScore">⭐ 0</span>
+    </div>
+    <div class="stage" id="stage"></div>
+  </section>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="box">
+    <h2>Maklumat Pembelajaran</h2>
+    <h3>Maklumat umum hasil pembelajaran</h3>
+    <p>Murid berupaya mengecam dan menamakan bunyi haiwan, manusia dan kenderaan yang didengar, serta membezakan dan mengelaskan bunyi tersebut secara berpandu.</p>
+    <h3>Mata pelajaran / Komponen</h3>
+    <p>Pendidikan Seni Kreatif – Komponen Pendidikan Muzik Tahun 1 (KSSRPK KS, Pendidikan Khas Pembelajaran)</p>
+    <h3>Tajuk</h3>
+    <p>3.0 Pengalaman Muzikal<br>3.1 Meneroka bunyi dari pelbagai sumber melalui pengamatan dan pendengaran</p>
+    <h3>Standard kandungan</h3>
+    <p>3.1.2 Mengecam bunyi yang didengar: i. haiwan, ii. manusia, iii. kenderaan</p>
+    <h3>Objektif (murid boleh…)</h3>
+    <ul><li>Menamakan bunyi yang didengar</li><li>Membezakan bunyi secara berpandu</li><li>Mengelas bunyi berdasarkan gambar secara berpandu</li></ul>
+    <h3>Tahap aktiviti</h3>
+    <p>Mudah (3 pilihan, ada petunjuk) • Sederhana (4 pilihan) • Mencabar (6 pilihan, tanpa petunjuk)</p>
+    <div class="center"><button class="btn" id="closeInfo">Tutup ✖</button></div>
+  </div>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
